@@ -11,7 +11,7 @@ export class WakeCross<T> {
     readonly maxAngle: Measurement<UnitAngle>
     readonly maxGForce: Measurement<UnitAcceleration>
     readonly maxAcceleration: Measurement<UnitAcceleration>
-    readonly timeOfRecordingInSeconds: number
+    readonly timeOfRecordingInMilliseconds: number
 
     constructor(
         position: T, 
@@ -21,7 +21,7 @@ export class WakeCross<T> {
         maxAngle: Measurement<UnitAcceleration>, 
         maxGForce: Measurement<UnitAcceleration>, 
         maxAcceleration: Measurement<UnitAcceleration>, 
-        timeOfRecordingInSeconds: number
+        timeOfRecordingInMilliseconds: number
     ) {
         this.position = position
         this.maxSpeed = maxSpeed
@@ -30,6 +30,6 @@ export class WakeCross<T> {
         this.maxAngle = maxAngle
         this.maxGForce = maxGForce
         this.maxAcceleration = maxAcceleration
-        this.timeOfRecordingInSeconds = timeOfRecordingInSeconds
+        this.timeOfRecordingInMilliseconds = timeOfRecordingInMilliseconds
     }
 }

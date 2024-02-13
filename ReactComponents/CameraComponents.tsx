@@ -33,7 +33,7 @@ export function startVideoRecording(camera: Camera, sessionID: string, onRecordF
                     sessionID, 
                     creationDate, 
                     video.path, 
-                    video.duration
+                    video.duration * 1000
                 )
             ),
             onRecordingError: (error) => onError(error),

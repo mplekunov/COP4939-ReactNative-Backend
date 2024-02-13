@@ -5,11 +5,11 @@ import { MotionRecord } from "./waterSkiing/motionRecord"
 
 export class BaseTrackingRecord {
     readonly motion: MotionRecord
-    readonly timeOfRecordingInSeconds: number
+    readonly timeOfRecrodingInMilliseconds: number
 
-    constructor(motion: MotionRecord, timeOfRecordingInSeconds: number) {
+    constructor(motion: MotionRecord, timeOfRecrodingInMilliseconds: number) {
         this.motion = motion
-        this.timeOfRecordingInSeconds = timeOfRecordingInSeconds
+        this.timeOfRecrodingInMilliseconds = timeOfRecrodingInMilliseconds
     }
 
     static parse(json: string) : BaseTrackingRecord {
@@ -17,9 +17,9 @@ export class BaseTrackingRecord {
             let anyJSON = JSON.parse(json)
 
             let motion = MotionRecord.parse(JSON.stringify(anyJSON.motion))
-            let timeOfRecordingInSeconds = anyJSON.timeOfRecordingInSeconds as number
+            let timeOfRecrodingInMilliseconds = anyJSON.timeOfRecrodingInMilliseconds as number
 
-            return new BaseTrackingRecord(motion, timeOfRecordingInSeconds)
+            return new BaseTrackingRecord(motion, timeOfRecrodingInMilliseconds)
         } catch (error) {
             throw new Error(`BaseTrackingRecord - ${error}`)
         }
@@ -34,9 +34,9 @@ export class TrackingRecord extends BaseTrackingRecord {
         motion: MotionRecord,
         speed: Measurement<UnitSpeed>,
         location: LocationRecord,
-        timeOfRecordingInSeconds: number
+        timeOfRecrodingInMilliseconds: number
     ) {
-        super(motion, timeOfRecordingInSeconds)
+        super(motion, timeOfRecrodingInMilliseconds)
         this.speed = speed
         this.location = location
     }

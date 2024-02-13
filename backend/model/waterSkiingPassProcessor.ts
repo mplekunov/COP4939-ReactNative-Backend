@@ -35,7 +35,7 @@ export class WaterSkiingPassProcessorForCoordinates {
             let video = session.video
             
             let passBuilder = new PassBuilder<Coordinate, Video<string>>()
-            let videoCreationDate = Math.floor(video.creationDate.getTime() / 1000) 
+            let videoCreationDate = Math.floor(video.creationDate.getTime()) 
     
             if (records.length == 0) {
                 return reject("Data array cannot be empty")
@@ -62,7 +62,7 @@ export class WaterSkiingPassProcessorForCoordinates {
             let trimmedRecords = Array<TrackingRecord>()
     
             records.forEach(record => {
-                if (record.timeOfRecordingInSeconds >= videoCreationDate) {
+                if (record.timeOfRecrodingInMilliseconds >= videoCreationDate) {
                     trimmedRecords.push(record)
                 }
             })
@@ -90,7 +90,7 @@ export class WaterSkiingPassProcessorForCoordinates {
                             record.motion.speed,
                             record.motion.attitude.roll,
                             record.motion.attitude.pitch,
-                            record.timeOfRecordingInSeconds
+                            record.timeOfRecrodingInMilliseconds
                         )
                     )
     
@@ -104,7 +104,7 @@ export class WaterSkiingPassProcessorForCoordinates {
                             maxSpeed,
                             maxRoll,
                             maxPitch,
-                            record.timeOfRecordingInSeconds
+                            record.timeOfRecrodingInMilliseconds
                         )
                     )
                 }
@@ -119,7 +119,7 @@ export class WaterSkiingPassProcessorForCoordinates {
                             maxAngle,
                             maxGForce,
                             maxAcceleration,
-                            record.timeOfRecordingInSeconds
+                            record.timeOfRecrodingInMilliseconds
                         )
                     )
 
@@ -133,27 +133,34 @@ export class WaterSkiingPassProcessorForCoordinates {
                             maxSpeed,
                             maxRoll,
                             maxPitch,
-                            record.timeOfRecordingInSeconds
+                            record.timeOfRecrodingInMilliseconds
                         )
                     )
     
                     buoyIndex++ 
                 }
             })
+
+            let exitGate = passBuilder.getExitGate()
+            let entryGate = passBuilder.getEntryGate()
     
-            if (passBuilder.getEntryGate() === undefined || passBuilder.getExitGate() === undefined) {
+            if (entryGate === undefined || exitGate === undefined) {
                 return reject("Entry/Exit gates undefined.")
             }
     
             try {
                 let trimmedVideo = await this.trimVideo(
-                    passBuilder.getEntryGate()?.timeOfRecordingInSeconds!,
-                    passBuilder.getExitGate()?.timeOfRecordingInSeconds!,
+                    exitGate.timeOfRecordingInMilliseconds,
+                    entryGate.timeOfRecordingInMilliseconds,
                     video
                 )
 
                 passBuilder.setVideo(trimmedVideo)
                 let pass = passBuilder.build()
+
+                if (pass?.buoys.length !== this.NUM_OF_BUOYS || pass.wakeCrosses.length !== this.NUM_OF_BUOYS) {
+                    return reject("Number of buoys or wake crosses is incorrect in the calculated pass.")
+                }
     
                 if (!pass) {
                     return reject("Pass is undefined.")   
@@ -161,6 +168,7 @@ export class WaterSkiingPassProcessorForCoordinates {
 
                 return resolve(pass)
             } catch (error) {
+                this.logger.error(`${error}`)
                 return reject(error)
             }
         })
@@ -174,7 +182,7 @@ export class WaterSkiingPassProcessorForCoordinates {
                 return reject("Document directory is undefined")
             }
     
-            let creationDate = Math.floor(video.creationDate.getTime() / 1000)
+            let creationDate = Math.floor(video.creationDate.getTime())
     
             let start = Math.abs(creationDate - startTime)
             let end = Math.abs(creationDate - endTime)
@@ -190,6 +198,7 @@ export class WaterSkiingPassProcessorForCoordinates {
 
                 return resolve(new Video<string>(video.id, video.creationDate, movieOutputURL, end - start))
             } catch (error) {
+                this.logger.error(`${error}`)
                 return reject(error)
             }
         })

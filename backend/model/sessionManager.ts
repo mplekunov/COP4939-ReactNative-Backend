@@ -7,17 +7,13 @@ import { Buffer } from 'buffer'
 import { BaseTrackingSession } from "./data/session";
 
 export class WatchSessionManager {
-    private readonly watchManager: WatchConnectivityManager
+    private readonly watchManager: WatchConnectivityManager = WatchConnectivityManager.getInstance()
     private readonly logger = new LoggerService("WatchSessionManager")
 
     private sessionID: string | null = null
-    private sessiontStartTimeInSeconds: number | null = null
+    private sessionStartTimeInMilliseconds: number | null = null
 
     private readonly TIME_OUT_IN_SECONDS = 30
-
-    constructor() {
-        this.watchManager = WatchConnectivityManager.getInstance()
-    }
 
     public getSessionID() : string | null {
         return this.sessionID
@@ -25,7 +21,7 @@ export class WatchSessionManager {
 
     private clearSessionProperties() {
         this.sessionID = null
-        this.sessiontStartTimeInSeconds = null
+        this.sessionStartTimeInMilliseconds = null
     }
 
     public startSession(): Promise<void> {
@@ -35,7 +31,7 @@ export class WatchSessionManager {
 
             try {
                 this.sessionID = uuid.v4().toString()
-                this.sessiontStartTimeInSeconds = Date.now() / 1000
+                this.sessionStartTimeInMilliseconds = Date.now()
 
                 await this.watchManager.send(this.encoder(DataType.WatchSessionStart, this.sessionID, ""))
                 await this.getWatchResponse(DataType.WatchSessionStart)
@@ -58,7 +54,7 @@ export class WatchSessionManager {
                     return reject("Session has not been started yet.")
                 }
 
-                if (!this.sessiontStartTimeInSeconds) {
+                if (!this.sessionStartTimeInMilliseconds) {
                     return reject("Session start time has not been initialized.")
                 }
 
@@ -73,7 +69,7 @@ export class WatchSessionManager {
 
                 let watchTrackingSession = new BaseTrackingSession<BaseTrackingRecord>(
                     watchSession.id,
-                    this.sessiontStartTimeInSeconds,
+                    this.sessionStartTimeInMilliseconds,
                     trackingRecords
                 )
                 
@@ -89,7 +85,7 @@ export class WatchSessionManager {
     private getWatchResponse(type: DataType): Promise<DataPacket> {
         return new Promise(async (resolve, reject) => {
             this.logger.log("Waiting for response...")
-            
+
             if (!this.sessionID) {
                 return reject("Session has not been started yet.")
             }

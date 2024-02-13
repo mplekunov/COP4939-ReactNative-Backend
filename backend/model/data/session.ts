@@ -2,17 +2,17 @@ import { BaseTrackingRecord } from "./trackingRecord"
 
 export class BaseTrackingSession<R> {
     readonly id: string
-    readonly dateInSeconds: number
+    readonly dateInMilliseconds: number
     readonly trackingRecords: Array<R>
 
     constructor(
         id: string,
-        dateInSeconds: number,
+        dateInMilliseconds: number,
         trackingRecords: Array<R>
     ) {
         this.id = id
         this.trackingRecords = trackingRecords
-        this.dateInSeconds = dateInSeconds
+        this.dateInMilliseconds = dateInMilliseconds
     }
 }
 
@@ -20,7 +20,7 @@ export class Session<R extends BaseTrackingRecord, V> extends BaseTrackingSessio
     readonly video: V
 
     constructor(baseTrackingSession: BaseTrackingSession<R>, video: V) {
-        super(baseTrackingSession.id, baseTrackingSession.dateInSeconds, baseTrackingSession.trackingRecords)
+        super(baseTrackingSession.id, baseTrackingSession.dateInMilliseconds, baseTrackingSession.trackingRecords)
         this.video = video
     }
 }

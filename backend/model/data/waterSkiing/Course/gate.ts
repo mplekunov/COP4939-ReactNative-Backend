@@ -7,7 +7,7 @@ export class Gate<T> {
     readonly maxSpeed: Measurement<UnitSpeed>
     readonly maxRoll: Measurement<UnitAngle>
     readonly maxPitch: Measurement<UnitAngle>
-    readonly timeOfRecordingInSeconds: number
+    readonly timeOfRecordingInMilliseconds: number
 
     constructor(
         position: T,
@@ -20,6 +20,6 @@ export class Gate<T> {
         this.maxSpeed = maxSpeed
         this.maxRoll = maxRoll
         this.maxPitch = maxPitch
-        this.timeOfRecordingInSeconds = timeOfRecordingInSeconds
+        this.timeOfRecordingInMilliseconds = timeOfRecordingInSeconds
     }
 }

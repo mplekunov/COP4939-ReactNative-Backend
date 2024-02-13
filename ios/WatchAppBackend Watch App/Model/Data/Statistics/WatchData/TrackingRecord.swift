@@ -10,32 +10,32 @@ import Foundation
 struct TrackingRecord : Codable, Equatable {
     let location: LocationRecord
     let motion: MotionRecord
-    let timeOfRecrodingInSeconds: Double
+    let timeOfRecrodingInMilliseconds: Int64
     
-    init(location: LocationRecord, motion: MotionRecord, timeOfRecordingInSeconds: Double) {
+    init(location: LocationRecord, motion: MotionRecord, timeOfRecrodingInMilliseconds: Int64) {
         self.location = location
         self.motion = motion
-        self.timeOfRecrodingInSeconds = timeOfRecordingInSeconds
+        self.timeOfRecrodingInMilliseconds = timeOfRecrodingInMilliseconds
     }
     
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.location = try container.decode(LocationRecord.self, forKey: .location)
         self.motion = try container.decode(MotionRecord.self, forKey: .motion)
-        self.timeOfRecrodingInSeconds = try container.decode(Double.self, forKey: .timeOfRecordingInSeconds)
+        self.timeOfRecrodingInMilliseconds = try container.decode(Int64.self, forKey: .timeOfRecrodingInMilliseconds)
     }
     
     enum CodingKeys: CodingKey {
         case location
         case motion
-        case timeOfRecordingInSeconds
+        case timeOfRecrodingInMilliseconds
     }
     
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(self.location, forKey: .location)
         try container.encode(self.motion, forKey: .motion)
-        try container.encode(self.timeOfRecrodingInSeconds, forKey: .timeOfRecordingInSeconds)
+        try container.encode(self.timeOfRecrodingInMilliseconds, forKey: .timeOfRecrodingInMilliseconds)
     }
  
     static func == (lhs: Self, rhs: Self) -> Bool {

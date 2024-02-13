@@ -7,19 +7,19 @@ export class Buoy<T> {
     readonly maxSpeed: Measurement<UnitSpeed>
     readonly maxRoll: Measurement<UnitAngle>
     readonly maxPitch: Measurement<UnitAngle>
-    readonly timeOfRecordingInSeconds: number
+    readonly timeOfRecordingInMilliseconds: number
 
     constructor(
         position: T, 
         maxSpeed: Measurement<UnitSpeed>, 
         maxRoll: Measurement<UnitAngle>, 
         maxPitch: Measurement<UnitAngle>, 
-        timeOfRecordingInSeconds: number
+        timeOfRecordingInMilliseconds: number
     ) {
         this.position = position
         this.maxSpeed = maxSpeed
         this.maxRoll = maxRoll
         this.maxPitch = maxPitch
-        this.timeOfRecordingInSeconds = timeOfRecordingInSeconds
+        this.timeOfRecordingInMilliseconds = timeOfRecordingInMilliseconds
     }
 }

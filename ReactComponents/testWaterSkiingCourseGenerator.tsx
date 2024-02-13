@@ -5,9 +5,9 @@ export function waterSkiingCourseGenerator(video: Video<string>): WaterSkiingCou
     let buoyPositions: number[] = []    
     let wakeCrossPositions: number[] = []
     let entryGatePosition: number = 1
-    let exitGatePosition: number = 16 
+    let exitGatePosition: number = 16000
 
-    let step = (exitGatePosition + entryGatePosition) / 14
+    let step = (exitGatePosition) / 14
 
     let j = 0
 

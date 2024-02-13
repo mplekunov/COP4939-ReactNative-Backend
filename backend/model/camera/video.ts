@@ -2,12 +2,12 @@ export class Video<Location> {
     readonly id: string
     readonly creationDate: Date
     readonly fileLocation: Location
-    readonly duration: number
+    readonly durationInMilliseconds: number
 
-    constructor(id: string, creationDate: Date, fileLocation: Location, duration: number) {
+    constructor(id: string, creationDate: Date, fileLocation: Location, durationInMilliseconds: number) {
         this.id = id
         this.creationDate = creationDate
         this.fileLocation = fileLocation
-        this.duration = duration
+        this.durationInMilliseconds = durationInMilliseconds
     }
 }
