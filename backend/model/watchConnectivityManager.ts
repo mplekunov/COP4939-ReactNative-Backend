@@ -2,7 +2,6 @@ import { getFileTransfers, getIsPaired, getIsWatchAppInstalled, getReachability,
 import { LoggerService } from "../logger/LoggerService";
 import { FileSystem } from "../fileSystem/fileSystem";
 import { DataPacket } from "./data/watch/dataPacket";
-import { Buffer } from 'buffer';
 import uuid from 'react-native-uuid';
 
 interface CallbackPair {
@@ -55,15 +54,15 @@ export class WatchConnectivityManager {
         let isInstalled = await getIsWatchAppInstalled()
 
         if (!isReachable) {
-            throw Error('Watch is not reachable.')
+            throw Error('WatchConnectivityManager - Watch is not reachable.')
         }
 
         if (!isPaired) {
-            throw Error('Watch is not paired.')
+            throw Error('WatchConnectivityManager - Watch is not paired.')
         }
 
         if (!isInstalled) {
-            throw Error('Watch is not installed.')
+            throw Error('WatchConnectivityManager - Watch is not installed.')
         }
     }
 
