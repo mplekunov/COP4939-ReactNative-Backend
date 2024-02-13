@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react"
 import { Video } from "../backend/model/camera/video"
-import { StyleSheet, View } from "react-native"
+import { StyleSheet, Text, View } from "react-native"
 import { LoggerService } from "../backend/logger/LoggerService";
 import { RecordButton } from "./RecordingButtonComponent";
 import { Camera, useCameraDevice } from "react-native-vision-camera";
@@ -18,6 +18,7 @@ export const SessionRecording: React.FC = () => {
     const [session, setSession] = useState<Session<BaseTrackingRecord, Video<string>>>()
     const [pass, setPass] = useState<Pass<number, Video<string>>>()
     const [isRecording, setIsRecording] = useState<boolean>(false)
+    const [isCameraPermissionGranted, setIsCameraPermissionGranted] = useState<boolean>(false)
 
     const camera = useRef<Camera>(null)
     
@@ -26,7 +27,14 @@ export const SessionRecording: React.FC = () => {
     const logger = useRef(new LoggerService("SessionRecordingComponent"))
 
     useEffect(() => {
-        getPermissions((error) => logger.current.error(`${error}`))
+        if (!isCameraPermissionGranted) {
+            setIsCameraPermissionGranted(true)
+
+            getPermissions((error) => {
+                logger.current.error(`${error}`)
+                setIsCameraPermissionGranted(false)
+            })
+        }
     })
 
     useEffect(() => {
@@ -94,6 +102,12 @@ export const SessionRecording: React.FC = () => {
         }
     }
     
+    if (!isCameraPermissionGranted) {
+        return (<View>
+            <Text>Camera Permission has not been granted</Text>
+        </View>)
+    }
+
     return (
         <View>
             <Camera 
