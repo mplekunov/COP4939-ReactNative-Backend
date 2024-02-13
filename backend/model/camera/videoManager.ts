@@ -1,5 +1,5 @@
 import { LoggerService } from "../../logger/LoggerService";
-import { FFmpegKit, FFmpegKitConfig, ReturnCode } from "ffmpeg-kit-react-native";
+import { FFmpegKit, FFmpegKitConfig, Level, ReturnCode } from "ffmpeg-kit-react-native";
 
 export class VideoManager {
     private logger: LoggerService
@@ -9,6 +9,8 @@ export class VideoManager {
     }
 
     async trimVideo(source: string, to: string, startTime: number, endTime: number) : Promise<Boolean> {
+        FFmpegKitConfig.setLogLevel(Level.AV_LOG_QUIET)
+        
         return await FFmpegKit.execute(`-i ${source.toString()} -ss ${startTime} -to ${endTime} -c copy ${to.toString()}`)
         .then(async session => {
             const state = FFmpegKitConfig.sessionStateToString(

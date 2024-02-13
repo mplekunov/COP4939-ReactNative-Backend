@@ -192,8 +192,6 @@ export class WaterSkiingPassProcessorForVideo {
             let start = Math.ceil(Math.abs(creationDate - startTime))
             let end = Math.floor(Math.abs(creationDate - endTime))
 
-            this.logger.log(`start ${start}, end ${end}, startTime ${startTime}, endTime ${endTime}, videoCreationDate ${creationDate}`)
-
             let movieOutputURL = documentsDirectory + "/" + video.id + "." + video.fileLocation.split(".").pop()
 
             try {

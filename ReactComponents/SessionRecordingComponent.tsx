@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react"
 import { Video } from "../backend/model/camera/video"
-import { Button, StyleSheet, View } from "react-native"
+import { StyleSheet, View } from "react-native"
 import { LoggerService } from "../backend/logger/LoggerService";
 import { RecordButton } from "./RecordingButtonComponent";
 import { Camera, useCameraDevice } from "react-native-vision-camera";
