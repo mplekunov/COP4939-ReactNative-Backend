@@ -38,11 +38,12 @@ export class WatchSessionManager {
                 this.sessionID = uuid.v4().toString()
                 this.sessiontStartTimeInSeconds = Date.now() / 1000
 
-                await this.watchManager.sendAsFile(this.encoder(DataType.WatchSessionStart, this.sessionID, ""))
+                await this.watchManager.send(this.encoder(DataType.WatchSessionStart, this.sessionID, ""))
                 await this.getWatchResponse(DataType.WatchSessionStart)
 
                 return resolve()
             } catch(error) {
+                this.logger.error(`${error}`)
                 this.clearSessionProperties()
                 return reject(error)
             }
@@ -61,7 +62,7 @@ export class WatchSessionManager {
                     return reject("Session start time has not been initialized.")
                 }
 
-                await this.watchManager.sendAsFile(this.encoder(DataType.WatchSessionEnd, this.sessionID, ""))
+                await this.watchManager.send(this.encoder(DataType.WatchSessionEnd, this.sessionID, ""))
                 await this.getWatchResponse(DataType.WatchSessionEnd)
 
                 let watchSession = await this.getWatchResponse(DataType.WatchSession)
@@ -79,6 +80,7 @@ export class WatchSessionManager {
                 this.clearSessionProperties()
                 return resolve(watchTrackingSession)
             } catch (error) {
+                this.logger.error(`${error}`)
                 return reject(error)
             }
         })
@@ -93,7 +95,6 @@ export class WatchSessionManager {
             }
     
             let timer = setTimeout(() => {
-                this.logger.error("Response timeout.")
                 return reject("Couldn't receive a response from the watch in allocated time.")
             }, this.TIME_OUT_IN_SECONDS * 1000)
     

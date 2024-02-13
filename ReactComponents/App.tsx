@@ -5,21 +5,12 @@
  * @format
  */
 
-import React, { useEffect, useRef, useState } from 'react';
+import React from 'react';
 import type {PropsWithChildren} from 'react';
 import {
-  Button,
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
   StyleSheet,
-  Text,
-  TouchableOpacity,
-  useColorScheme,
   View,
 } from 'react-native';
-import { Video } from '../backend/model/camera/video';
-import { CameraRoll } from '@react-native-camera-roll/camera-roll';
 import { SessionRecording } from './SessionRecordingComponent';
 
 type SectionProps = PropsWithChildren<{
@@ -30,7 +21,6 @@ function App(): React.JSX.Element {
   return (
     <View  style={styles.container}>
       <SessionRecording />
-
     </View>
   )
 }
