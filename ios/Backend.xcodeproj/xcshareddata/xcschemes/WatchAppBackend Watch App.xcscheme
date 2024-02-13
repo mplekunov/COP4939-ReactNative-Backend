@@ -1,11 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
    LastUpgradeVersion = "1510"
-   version = "1.3">
+   version = "1.7">
    <BuildAction
       parallelizeBuildables = "YES"
       buildImplicitDependencies = "YES">
       <BuildActionEntries>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "6DDE6AA52B77DF430059990D"
+               BuildableName = "WatchAppBackend Watch App.app"
+               BlueprintName = "WatchAppBackend Watch App"
+               ReferencedContainer = "container:Backend.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
          <BuildActionEntry
             buildForTesting = "YES"
             buildForRunning = "YES"
@@ -26,19 +40,8 @@
       buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
-      shouldUseLaunchSchemeArgsEnv = "YES">
-      <Testables>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "00E356ED1AD99517003FC87E"
-               BuildableName = "BackendTests.xctest"
-               BlueprintName = "BackendTests"
-               ReferencedContainer = "container:Backend.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
-      </Testables>
+      shouldUseLaunchSchemeArgsEnv = "YES"
+      shouldAutocreateTestPlan = "YES">
    </TestAction>
    <LaunchAction
       buildConfiguration = "Debug"
@@ -54,9 +57,9 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "Backend.app"
-            BlueprintName = "Backend"
+            BlueprintIdentifier = "6DDE6AA52B77DF430059990D"
+            BuildableName = "WatchAppBackend Watch App.app"
+            BlueprintName = "WatchAppBackend Watch App"
             ReferencedContainer = "container:Backend.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -71,9 +74,9 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "Backend.app"
-            BlueprintName = "Backend"
+            BlueprintIdentifier = "6DDE6AA52B77DF430059990D"
+            BuildableName = "WatchAppBackend Watch App.app"
+            BlueprintName = "WatchAppBackend Watch App"
             ReferencedContainer = "container:Backend.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>

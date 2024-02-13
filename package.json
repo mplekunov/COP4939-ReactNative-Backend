@@ -10,8 +10,17 @@
     "test": "jest"
   },
   "dependencies": {
+    "@react-native-camera-roll/camera-roll": "^7.4.0",
+    "ffmpeg-kit-react-native": "^6.0.2",
+    "mobx": "^6.12.0",
     "react": "18.2.0",
-    "react-native": "0.73.4"
+    "react-native": "0.73.4",
+    "react-native-fs": "^2.20.0",
+    "react-native-uuid": "^2.0.1",
+    "react-native-video": "^5.2.1",
+    "react-native-vision-camera": "^3.8.2",
+    "react-native-watch-connectivity": "^1.1.0",
+    "zod": "^3.22.4"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

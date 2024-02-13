@@ -12,6 +12,36 @@
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
+		6DDE6AB32B77DF440059990D /* WatchAppBackend Watch App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 6DDE6AA62B77DF430059990D /* WatchAppBackend Watch App.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		6DDE6AE72B77E0850059990D /* StatisticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DDE6ABB2B77E0850059990D /* StatisticsView.swift */; };
+		6DDE6AE82B77E0850059990D /* SessionRecordingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DDE6ABC2B77E0850059990D /* SessionRecordingView.swift */; };
+		6DDE6AE92B77E0850059990D /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DDE6ABD2B77E0850059990D /* ContentView.swift */; };
+		6DDE6AEA2B77E0850059990D /* WatchAppBackend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DDE6ABE2B77E0850059990D /* WatchAppBackend.swift */; };
+		6DDE6AEB2B77E0850059990D /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DDE6AC02B77E0850059990D /* Date.swift */; };
+		6DDE6AEC2B77E0850059990D /* WatchConnectivityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DDE6AC12B77E0850059990D /* WatchConnectivityManager.swift */; };
+		6DDE6AED2B77E0850059990D /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DDE6AC22B77E0850059990D /* LocationManager.swift */; };
+		6DDE6AEE2B77E0850059990D /* Coordinate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DDE6AC72B77E0850059990D /* Coordinate.swift */; };
+		6DDE6AEF2B77E0850059990D /* LocationRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DDE6AC82B77E0850059990D /* LocationRecord.swift */; };
+		6DDE6AF02B77E0850059990D /* MotionRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DDE6ACA2B77E0850059990D /* MotionRecord.swift */; };
+		6DDE6AF12B77E0850059990D /* Attitude.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DDE6ACB2B77E0850059990D /* Attitude.swift */; };
+		6DDE6AF22B77E0850059990D /* TrackingRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DDE6ACC2B77E0850059990D /* TrackingRecord.swift */; };
+		6DDE6AF32B77E0850059990D /* Unit3D.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DDE6ACE2B77E0850059990D /* Unit3D.swift */; };
+		6DDE6AF42B77E0850059990D /* DeliveryInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DDE6AD02B77E0850059990D /* DeliveryInformation.swift */; };
+		6DDE6AF52B77E0850059990D /* DataType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DDE6AD12B77E0850059990D /* DataType.swift */; };
+		6DDE6AF62B77E0850059990D /* DataPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DDE6AD22B77E0850059990D /* DataPacket.swift */; };
+		6DDE6AF72B77E0850059990D /* DataCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DDE6AD32B77E0850059990D /* DataCache.swift */; };
+		6DDE6AF82B77E0850059990D /* BaseTrackingSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DDE6AD52B77E0850059990D /* BaseTrackingSession.swift */; };
+		6DDE6AF92B77E0850059990D /* SessionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DDE6AD72B77E0850059990D /* SessionViewModel.swift */; };
+		6DDE6AFA2B77E0850059990D /* DeviceLocationSensorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DDE6AD82B77E0850059990D /* DeviceLocationSensorViewModel.swift */; };
+		6DDE6AFB2B77E0850059990D /* DataCollectorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DDE6AD92B77E0850059990D /* DataCollectorViewModel.swift */; };
+		6DDE6AFC2B77E0850059990D /* DeviceMotionSensorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DDE6ADA2B77E0850059990D /* DeviceMotionSensorViewModel.swift */; };
+		6DDE6AFE2B77E0850059990D /* WatchConnectivityError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DDE6ADE2B77E0850059990D /* WatchConnectivityError.swift */; };
+		6DDE6AFF2B77E0850059990D /* LocationManagerError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DDE6ADF2B77E0850059990D /* LocationManagerError.swift */; };
+		6DDE6B002B77E0850059990D /* MotionManagerError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DDE6AE02B77E0850059990D /* MotionManagerError.swift */; };
+		6DDE6B012B77E0850059990D /* LoggerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DDE6AE32B77E0850059990D /* LoggerService.swift */; };
+		6DDE6B022B77E0850059990D /* JSONConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DDE6AE52B77E0850059990D /* JSONConverter.swift */; };
+		6DDE6B062B77E0C50059990D /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6DDE6B042B77E0C50059990D /* Preview Assets.xcassets */; };
+		6DDE6B072B77E0C50059990D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6DDE6B052B77E0C50059990D /* Assets.xcassets */; };
 		7699B88040F8A987B510C191 /* libPods-Backend-BackendTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-Backend-BackendTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 /* End PBXBuildFile section */
@@ -24,7 +54,28 @@
 			remoteGlobalIDString = 13B07F861A680F5B00A75B9A;
 			remoteInfo = Backend;
 		};
+		6DDE6AB12B77DF440059990D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 83CBB9F71A601CBA00E9B192 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 6DDE6AA52B77DF430059990D;
+			remoteInfo = "WatchAppBackend Watch App";
+		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		6DDE6AB72B77DF450059990D /* Embed Watch Content */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
+			dstSubfolderSpec = 16;
+			files = (
+				6DDE6AB32B77DF440059990D /* WatchAppBackend Watch App.app in Embed Watch Content */,
+			);
+			name = "Embed Watch Content";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		00E356EE1AD99517003FC87E /* BackendTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BackendTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -41,6 +92,36 @@
 		5709B34CF0A7D63546082F79 /* Pods-Backend.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Backend.release.xcconfig"; path = "Target Support Files/Pods-Backend/Pods-Backend.release.xcconfig"; sourceTree = "<group>"; };
 		5B7EB9410499542E8C5724F5 /* Pods-Backend-BackendTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Backend-BackendTests.debug.xcconfig"; path = "Target Support Files/Pods-Backend-BackendTests/Pods-Backend-BackendTests.debug.xcconfig"; sourceTree = "<group>"; };
 		5DCACB8F33CDC322A6C60F78 /* libPods-Backend.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Backend.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		6DDE6AA62B77DF430059990D /* WatchAppBackend Watch App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "WatchAppBackend Watch App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		6DDE6ABB2B77E0850059990D /* StatisticsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatisticsView.swift; sourceTree = "<group>"; };
+		6DDE6ABC2B77E0850059990D /* SessionRecordingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SessionRecordingView.swift; sourceTree = "<group>"; };
+		6DDE6ABD2B77E0850059990D /* ContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		6DDE6ABE2B77E0850059990D /* WatchAppBackend.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WatchAppBackend.swift; sourceTree = "<group>"; };
+		6DDE6AC02B77E0850059990D /* Date.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
+		6DDE6AC12B77E0850059990D /* WatchConnectivityManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WatchConnectivityManager.swift; sourceTree = "<group>"; };
+		6DDE6AC22B77E0850059990D /* LocationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
+		6DDE6AC72B77E0850059990D /* Coordinate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Coordinate.swift; sourceTree = "<group>"; };
+		6DDE6AC82B77E0850059990D /* LocationRecord.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationRecord.swift; sourceTree = "<group>"; };
+		6DDE6ACA2B77E0850059990D /* MotionRecord.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MotionRecord.swift; sourceTree = "<group>"; };
+		6DDE6ACB2B77E0850059990D /* Attitude.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Attitude.swift; sourceTree = "<group>"; };
+		6DDE6ACC2B77E0850059990D /* TrackingRecord.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrackingRecord.swift; sourceTree = "<group>"; };
+		6DDE6ACE2B77E0850059990D /* Unit3D.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Unit3D.swift; sourceTree = "<group>"; };
+		6DDE6AD02B77E0850059990D /* DeliveryInformation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeliveryInformation.swift; sourceTree = "<group>"; };
+		6DDE6AD12B77E0850059990D /* DataType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataType.swift; sourceTree = "<group>"; };
+		6DDE6AD22B77E0850059990D /* DataPacket.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataPacket.swift; sourceTree = "<group>"; };
+		6DDE6AD32B77E0850059990D /* DataCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataCache.swift; sourceTree = "<group>"; };
+		6DDE6AD52B77E0850059990D /* BaseTrackingSession.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseTrackingSession.swift; sourceTree = "<group>"; };
+		6DDE6AD72B77E0850059990D /* SessionViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SessionViewModel.swift; sourceTree = "<group>"; };
+		6DDE6AD82B77E0850059990D /* DeviceLocationSensorViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceLocationSensorViewModel.swift; sourceTree = "<group>"; };
+		6DDE6AD92B77E0850059990D /* DataCollectorViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataCollectorViewModel.swift; sourceTree = "<group>"; };
+		6DDE6ADA2B77E0850059990D /* DeviceMotionSensorViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceMotionSensorViewModel.swift; sourceTree = "<group>"; };
+		6DDE6ADE2B77E0850059990D /* WatchConnectivityError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WatchConnectivityError.swift; sourceTree = "<group>"; };
+		6DDE6ADF2B77E0850059990D /* LocationManagerError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationManagerError.swift; sourceTree = "<group>"; };
+		6DDE6AE02B77E0850059990D /* MotionManagerError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MotionManagerError.swift; sourceTree = "<group>"; };
+		6DDE6AE32B77E0850059990D /* LoggerService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoggerService.swift; sourceTree = "<group>"; };
+		6DDE6AE52B77E0850059990D /* JSONConverter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONConverter.swift; sourceTree = "<group>"; };
+		6DDE6B042B77E0C50059990D /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		6DDE6B052B77E0C50059990D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = Backend/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-Backend-BackendTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Backend-BackendTests.release.xcconfig"; path = "Target Support Files/Pods-Backend-BackendTests/Pods-Backend-BackendTests.release.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
@@ -60,6 +141,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				0C80B921A6F3F58F76C31292 /* libPods-Backend.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6DDE6AA32B77DF430059990D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -106,6 +194,170 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		6DDE6AA72B77DF430059990D /* WatchAppBackend Watch App */ = {
+			isa = PBXGroup;
+			children = (
+				6DDE6B052B77E0C50059990D /* Assets.xcassets */,
+				6DDE6B032B77E0C50059990D /* Preview Content */,
+				6DDE6ABE2B77E0850059990D /* WatchAppBackend.swift */,
+				6DDE6ADD2B77E0850059990D /* CustomError */,
+				6DDE6ABF2B77E0850059990D /* Model */,
+				6DDE6AE12B77E0850059990D /* Tools */,
+				6DDE6ABA2B77E0850059990D /* View */,
+				6DDE6AD62B77E0850059990D /* ViewModel */,
+			);
+			path = "WatchAppBackend Watch App";
+			sourceTree = "<group>";
+		};
+		6DDE6ABA2B77E0850059990D /* View */ = {
+			isa = PBXGroup;
+			children = (
+				6DDE6ABB2B77E0850059990D /* StatisticsView.swift */,
+				6DDE6ABC2B77E0850059990D /* SessionRecordingView.swift */,
+				6DDE6ABD2B77E0850059990D /* ContentView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		6DDE6ABF2B77E0850059990D /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				6DDE6AC02B77E0850059990D /* Date.swift */,
+				6DDE6AC12B77E0850059990D /* WatchConnectivityManager.swift */,
+				6DDE6AC22B77E0850059990D /* LocationManager.swift */,
+				6DDE6AC32B77E0850059990D /* Data */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		6DDE6AC32B77E0850059990D /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				6DDE6AC42B77E0850059990D /* Statistics */,
+				6DDE6ACF2B77E0850059990D /* Network */,
+				6DDE6AD42B77E0850059990D /* Session */,
+			);
+			path = Data;
+			sourceTree = "<group>";
+		};
+		6DDE6AC42B77E0850059990D /* Statistics */ = {
+			isa = PBXGroup;
+			children = (
+				6DDE6AC52B77E0850059990D /* WatchData */,
+				6DDE6ACD2B77E0850059990D /* Units */,
+			);
+			path = Statistics;
+			sourceTree = "<group>";
+		};
+		6DDE6AC52B77E0850059990D /* WatchData */ = {
+			isa = PBXGroup;
+			children = (
+				6DDE6AC62B77E0850059990D /* Location */,
+				6DDE6AC92B77E0850059990D /* Motion */,
+				6DDE6ACC2B77E0850059990D /* TrackingRecord.swift */,
+			);
+			path = WatchData;
+			sourceTree = "<group>";
+		};
+		6DDE6AC62B77E0850059990D /* Location */ = {
+			isa = PBXGroup;
+			children = (
+				6DDE6AC72B77E0850059990D /* Coordinate.swift */,
+				6DDE6AC82B77E0850059990D /* LocationRecord.swift */,
+			);
+			path = Location;
+			sourceTree = "<group>";
+		};
+		6DDE6AC92B77E0850059990D /* Motion */ = {
+			isa = PBXGroup;
+			children = (
+				6DDE6ACA2B77E0850059990D /* MotionRecord.swift */,
+				6DDE6ACB2B77E0850059990D /* Attitude.swift */,
+			);
+			path = Motion;
+			sourceTree = "<group>";
+		};
+		6DDE6ACD2B77E0850059990D /* Units */ = {
+			isa = PBXGroup;
+			children = (
+				6DDE6ACE2B77E0850059990D /* Unit3D.swift */,
+			);
+			path = Units;
+			sourceTree = "<group>";
+		};
+		6DDE6ACF2B77E0850059990D /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				6DDE6AD02B77E0850059990D /* DeliveryInformation.swift */,
+				6DDE6AD12B77E0850059990D /* DataType.swift */,
+				6DDE6AD22B77E0850059990D /* DataPacket.swift */,
+				6DDE6AD32B77E0850059990D /* DataCache.swift */,
+			);
+			path = Network;
+			sourceTree = "<group>";
+		};
+		6DDE6AD42B77E0850059990D /* Session */ = {
+			isa = PBXGroup;
+			children = (
+				6DDE6AD52B77E0850059990D /* BaseTrackingSession.swift */,
+			);
+			path = Session;
+			sourceTree = "<group>";
+		};
+		6DDE6AD62B77E0850059990D /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				6DDE6AD72B77E0850059990D /* SessionViewModel.swift */,
+				6DDE6AD82B77E0850059990D /* DeviceLocationSensorViewModel.swift */,
+				6DDE6AD92B77E0850059990D /* DataCollectorViewModel.swift */,
+				6DDE6ADA2B77E0850059990D /* DeviceMotionSensorViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		6DDE6ADD2B77E0850059990D /* CustomError */ = {
+			isa = PBXGroup;
+			children = (
+				6DDE6ADE2B77E0850059990D /* WatchConnectivityError.swift */,
+				6DDE6ADF2B77E0850059990D /* LocationManagerError.swift */,
+				6DDE6AE02B77E0850059990D /* MotionManagerError.swift */,
+			);
+			path = CustomError;
+			sourceTree = "<group>";
+		};
+		6DDE6AE12B77E0850059990D /* Tools */ = {
+			isa = PBXGroup;
+			children = (
+				6DDE6AE22B77E0850059990D /* Logger */,
+				6DDE6AE42B77E0850059990D /* Converter */,
+			);
+			path = Tools;
+			sourceTree = "<group>";
+		};
+		6DDE6AE22B77E0850059990D /* Logger */ = {
+			isa = PBXGroup;
+			children = (
+				6DDE6AE32B77E0850059990D /* LoggerService.swift */,
+			);
+			path = Logger;
+			sourceTree = "<group>";
+		};
+		6DDE6AE42B77E0850059990D /* Converter */ = {
+			isa = PBXGroup;
+			children = (
+				6DDE6AE52B77E0850059990D /* JSONConverter.swift */,
+			);
+			path = Converter;
+			sourceTree = "<group>";
+		};
+		6DDE6B032B77E0C50059990D /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				6DDE6B042B77E0C50059990D /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
@@ -119,6 +371,7 @@
 				13B07FAE1A68108700A75B9A /* Backend */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* BackendTests */,
+				6DDE6AA72B77DF430059990D /* WatchAppBackend Watch App */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				BBD78D7AC51CEA395F1C20DB /* Pods */,
@@ -133,6 +386,7 @@
 			children = (
 				13B07F961A680F5B00A75B9A /* Backend.app */,
 				00E356EE1AD99517003FC87E /* BackendTests.xctest */,
+				6DDE6AA62B77DF430059990D /* WatchAppBackend Watch App.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -183,14 +437,33 @@
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				00EEFC60759A1932668264C0 /* [CP] Embed Pods Frameworks */,
 				E235C05ADACE081382539298 /* [CP] Copy Pods Resources */,
+				6DDE6AB72B77DF450059990D /* Embed Watch Content */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				6DDE6AB22B77DF440059990D /* PBXTargetDependency */,
+			);
+			name = Backend;
+			productName = Backend;
+			productReference = 13B07F961A680F5B00A75B9A /* Backend.app */;
+			productType = "com.apple.product-type.application";
+		};
+		6DDE6AA52B77DF430059990D /* WatchAppBackend Watch App */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6DDE6AB42B77DF450059990D /* Build configuration list for PBXNativeTarget "WatchAppBackend Watch App" */;
+			buildPhases = (
+				6DDE6AA22B77DF430059990D /* Sources */,
+				6DDE6AA32B77DF430059990D /* Frameworks */,
+				6DDE6AA42B77DF430059990D /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
-			name = Backend;
-			productName = Backend;
-			productReference = 13B07F961A680F5B00A75B9A /* Backend.app */;
+			name = "WatchAppBackend Watch App";
+			productName = "WatchAppBackend Watch App";
+			productReference = 6DDE6AA62B77DF430059990D /* WatchAppBackend Watch App.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -199,7 +472,9 @@
 		83CBB9F71A601CBA00E9B192 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 1210;
+				BuildIndependentTargetsInParallel = YES;
+				LastSwiftUpdateCheck = 1510;
+				LastUpgradeCheck = 1510;
 				TargetAttributes = {
 					00E356ED1AD99517003FC87E = {
 						CreatedOnToolsVersion = 6.2;
@@ -207,6 +482,10 @@
 					};
 					13B07F861A680F5B00A75B9A = {
 						LastSwiftMigration = 1120;
+					};
+					6DDE6AA52B77DF430059990D = {
+						CreatedOnToolsVersion = 15.1;
+						LastSwiftMigration = 1510;
 					};
 				};
 			};
@@ -225,6 +504,7 @@
 			targets = (
 				13B07F861A680F5B00A75B9A /* Backend */,
 				00E356ED1AD99517003FC87E /* BackendTests */,
+				6DDE6AA52B77DF430059990D /* WatchAppBackend Watch App */,
 			);
 		};
 /* End PBXProject section */
@@ -243,6 +523,15 @@
 			files = (
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6DDE6AA42B77DF430059990D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6DDE6B072B77E0C50059990D /* Assets.xcassets in Resources */,
+				6DDE6B062B77E0C50059990D /* Preview Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -397,6 +686,40 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		6DDE6AA22B77DF430059990D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6DDE6AE72B77E0850059990D /* StatisticsView.swift in Sources */,
+				6DDE6AF52B77E0850059990D /* DataType.swift in Sources */,
+				6DDE6AF22B77E0850059990D /* TrackingRecord.swift in Sources */,
+				6DDE6AF72B77E0850059990D /* DataCache.swift in Sources */,
+				6DDE6AEB2B77E0850059990D /* Date.swift in Sources */,
+				6DDE6AEA2B77E0850059990D /* WatchAppBackend.swift in Sources */,
+				6DDE6AEF2B77E0850059990D /* LocationRecord.swift in Sources */,
+				6DDE6AF32B77E0850059990D /* Unit3D.swift in Sources */,
+				6DDE6AF12B77E0850059990D /* Attitude.swift in Sources */,
+				6DDE6AFE2B77E0850059990D /* WatchConnectivityError.swift in Sources */,
+				6DDE6AFA2B77E0850059990D /* DeviceLocationSensorViewModel.swift in Sources */,
+				6DDE6AFF2B77E0850059990D /* LocationManagerError.swift in Sources */,
+				6DDE6AEE2B77E0850059990D /* Coordinate.swift in Sources */,
+				6DDE6AED2B77E0850059990D /* LocationManager.swift in Sources */,
+				6DDE6AF82B77E0850059990D /* BaseTrackingSession.swift in Sources */,
+				6DDE6AF02B77E0850059990D /* MotionRecord.swift in Sources */,
+				6DDE6AFB2B77E0850059990D /* DataCollectorViewModel.swift in Sources */,
+				6DDE6AF42B77E0850059990D /* DeliveryInformation.swift in Sources */,
+				6DDE6AE82B77E0850059990D /* SessionRecordingView.swift in Sources */,
+				6DDE6AF92B77E0850059990D /* SessionViewModel.swift in Sources */,
+				6DDE6B022B77E0850059990D /* JSONConverter.swift in Sources */,
+				6DDE6AFC2B77E0850059990D /* DeviceMotionSensorViewModel.swift in Sources */,
+				6DDE6B002B77E0850059990D /* MotionManagerError.swift in Sources */,
+				6DDE6AF62B77E0850059990D /* DataPacket.swift in Sources */,
+				6DDE6B012B77E0850059990D /* LoggerService.swift in Sources */,
+				6DDE6AEC2B77E0850059990D /* WatchConnectivityManager.swift in Sources */,
+				6DDE6AE92B77E0850059990D /* ContentView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -405,6 +728,11 @@
 			target = 13B07F861A680F5B00A75B9A /* Backend */;
 			targetProxy = 00E356F41AD99517003FC87E /* PBXContainerItemProxy */;
 		};
+		6DDE6AB22B77DF440059990D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 6DDE6AA52B77DF430059990D /* WatchAppBackend Watch App */;
+			targetProxy = 6DDE6AB12B77DF440059990D /* PBXContainerItemProxy */;
+		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
@@ -412,7 +740,9 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 5B7EB9410499542E8C5724F5 /* Pods-Backend-BackendTests.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEVELOPMENT_TEAM = Q26F9PL9UW;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -439,8 +769,10 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 89C6BE57DB24E9ADA2F236DE /* Pods-Backend-BackendTests.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
+				DEVELOPMENT_TEAM = Q26F9PL9UW;
 				INFOPLIST_FILE = BackendTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -463,10 +795,13 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 3B4392A12AC88292D35C810B /* Pods-Backend.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = Q26F9PL9UW;
 				ENABLE_BITCODE = NO;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				INFOPLIST_FILE = Backend/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -482,6 +817,7 @@
 				PRODUCT_NAME = Backend;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
+				USE_RECURSIVE_SCRIPT_INPUTS_IN_SCRIPT_PHASES = YES;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -490,9 +826,12 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 5709B34CF0A7D63546082F79 /* Pods-Backend.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = Q26F9PL9UW;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				INFOPLIST_FILE = Backend/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -507,7 +846,109 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = Backend;
 				SWIFT_VERSION = 5.0;
+				USE_RECURSIVE_SCRIPT_INPUTS_IN_SCRIPT_PHASES = YES;
 				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = Release;
+		};
+		6DDE6AB52B77DF450059990D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_ASSET_PATHS = "\"WatchAppBackend Watch App/Preview Content\"";
+				DEVELOPMENT_TEAM = Q26F9PL9UW;
+				ENABLE_PREVIEWS = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = WatchAppBackend;
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "";
+				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "";
+				INFOPLIST_KEY_NSLocationUsageDescription = "";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "";
+				INFOPLIST_KEY_NSMotionUsageDescription = "";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = org.reactjs.native.example.Backend;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.example.Backend.watchkitapp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 10.0;
+			};
+			name = Debug;
+		};
+		6DDE6AB62B77DF450059990D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_ASSET_PATHS = "\"WatchAppBackend Watch App/Preview Content\"";
+				DEVELOPMENT_TEAM = Q26F9PL9UW;
+				ENABLE_PREVIEWS = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = WatchAppBackend;
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "";
+				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "";
+				INFOPLIST_KEY_NSLocationUsageDescription = "";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "";
+				INFOPLIST_KEY_NSMotionUsageDescription = "";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = org.reactjs.native.example.Backend;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.example.Backend.watchkitapp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 10.0;
 			};
 			name = Release;
 		};
@@ -544,7 +985,8 @@
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
-				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "";
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = i386;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -572,6 +1014,7 @@
 				);
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = "$(inherited)";
 				OTHER_CPLUSPLUSFLAGS = (
 					"$(OTHER_CFLAGS)",
 					"-DFOLLY_NO_CONFIG",
@@ -579,7 +1022,13 @@
 					"-DFOLLY_USE_LIBCPP=1",
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 				);
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					" ",
+				);
+				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
+				USE_HERMES = true;
 			};
 			name = Debug;
 		};
@@ -616,7 +1065,8 @@
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "";
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = i386;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -636,6 +1086,7 @@
 					"\"$(inherited)\"",
 				);
 				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_CFLAGS = "$(inherited)";
 				OTHER_CPLUSPLUSFLAGS = (
 					"$(OTHER_CFLAGS)",
 					"-DFOLLY_NO_CONFIG",
@@ -643,7 +1094,13 @@
 					"-DFOLLY_USE_LIBCPP=1",
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 				);
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					" ",
+				);
+				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
+				USE_HERMES = true;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -665,6 +1122,15 @@
 			buildConfigurations = (
 				13B07F941A680F5B00A75B9A /* Debug */,
 				13B07F951A680F5B00A75B9A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		6DDE6AB42B77DF450059990D /* Build configuration list for PBXNativeTarget "WatchAppBackend Watch App" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6DDE6AB52B77DF450059990D /* Debug */,
+				6DDE6AB62B77DF450059990D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
