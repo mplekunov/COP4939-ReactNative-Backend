@@ -17,18 +17,12 @@ import { WaterSkiingCourse } from "./data/waterSkiing/Course/waterSkiingCourse";
 import { Pass, PassBuilder } from "./data/waterSkiing/pass";
 
 export class WaterSkiingPassProcessorForCoordinates {
-    private readonly logger: LoggerService
-    private readonly videoManager: VideoManager
+    private readonly logger: LoggerService = new LoggerService("WaterSkiingPassProcessorForCoordinates")
+    private readonly videoManager: VideoManager = new VideoManager()
 
     private readonly NUM_OF_BUOYS = 6
 
     private readonly RANGE: Measurement<UnitLength> = new Measurement<UnitLength>(1.0, UnitLength.meters)
-
-    constructor() {
-        this.logger = new LoggerService(typeof(this))
-        this.videoManager = new VideoManager()
-    }
-
     public async process(course: WaterSkiingCourse<Coordinate>, session: Session<TrackingRecord, Video<string>>) : Promise<Pass<Coordinate, Video<string>>> {
         return new Promise(async (resolve, reject) => {
             let records = session.trackingRecords
