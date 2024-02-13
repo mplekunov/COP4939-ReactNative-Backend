@@ -2,30 +2,30 @@ import { LoggerService } from "../../logger/LoggerService";
 import { FFmpegKit, FFmpegKitConfig, Level, ReturnCode } from "ffmpeg-kit-react-native";
 
 export class VideoManager {
-    private logger: LoggerService
+    private logger: LoggerService = new LoggerService("VideoManager")
 
-    constructor() {
-        this.logger = new LoggerService(typeof(this))
-    }
+    public trimVideo(source: string, to: string, startTime: number, endTime: number) : Promise<Boolean> {
+        return new Promise(async (resolve, reject) => {
+          FFmpegKitConfig.setLogLevel(Level.AV_LOG_QUIET)
+        
+          try {
+            let session = await FFmpegKit.execute(`-i ${source.toString()} -ss ${startTime} -to ${endTime} -c copy ${to.toString()}`)
 
-    async trimVideo(source: string, to: string, startTime: number, endTime: number) : Promise<Boolean> {
-        FFmpegKitConfig.setLogLevel(Level.AV_LOG_QUIET)
-        
-        return await FFmpegKit.execute(`-i ${source.toString()} -ss ${startTime} -to ${endTime} -c copy ${to.toString()}`)
-        .then(async session => {
-            const state = FFmpegKitConfig.sessionStateToString(
-                await session.getState(),
-              )
-              
-              const returnCode = await session.getReturnCode()
-        
-              if (ReturnCode.isSuccess(returnCode)) {
-                return true
-              } else if (ReturnCode.isCancel(returnCode)) {
-                throw new Error('Encode canceled')
-              } else {
-                  throw new Error(`Trimming failed with state ${state} and rc ${returnCode}`)
-              }
+            let state = FFmpegKitConfig.sessionStateToString(await session.getState())
+            
+            let returnCode = await session.getReturnCode()
+      
+            if (ReturnCode.isSuccess(returnCode)) {
+              return resolve(true)
+            } else if (ReturnCode.isCancel(returnCode)) {
+              return reject('Encode canceled')
+            } else {
+                return reject(`Trimming failed with state ${state} and rc ${returnCode}`)
+            }
+          } catch (error) {
+            this.logger.error(`VideoManager - ${error}`)
+            return reject(error)
+          }
         })
     }
 }
