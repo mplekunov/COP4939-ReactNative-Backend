@@ -25,12 +25,15 @@ struct SessionRecordingView: View {
                         dataCollectorViewModel.startDataCollection()
                     }
                 })
+                .onReceive(sessionViewModel.$isStarted, perform: { isStarted in
+                    if isStarted {
+                        dataCollectorViewModel.clear()
+                    }
+                })
                 .onReceive(sessionViewModel.$isEnded, perform: { isEnded in
                     if isEnded {
                         dataCollectorViewModel.stopDataCollection()
-                      
                         sessionViewModel.sendSession(data: dataCollectorViewModel.trackingRecords)
-                        dataCollectorViewModel.clear()
                     }
                 })
         }
