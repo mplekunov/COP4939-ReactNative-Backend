@@ -20,7 +20,7 @@ export class VideoManager {
             } else if (ReturnCode.isCancel(returnCode)) {
               return reject('Encode canceled')
             } else {
-                return reject(`Trimming failed with state ${state} and rc ${returnCode}`)
+              return reject(`Trimming failed with state ${state} and rc ${returnCode}`)
             }
           } catch (error) {
             this.logger.error(`VideoManager - ${error}`)
