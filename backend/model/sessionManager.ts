@@ -29,10 +29,10 @@ export class WatchSessionManager {
     }
 
     public startSession(): Promise<void> {
-        this.logger.log("Starting Session...")
-        this.clearSessionProperties()
-
         return new Promise(async (resolve, reject) => {
+            this.logger.log("Starting Session...")
+            this.clearSessionProperties()
+
             try {
                 this.sessionID = uuid.v4().toString()
                 this.sessiontStartTimeInSeconds = Date.now() / 1000
@@ -50,8 +50,9 @@ export class WatchSessionManager {
     }
 
     public stopSession(): Promise<BaseTrackingSession<BaseTrackingRecord>> {
-        this.logger.log("Ending Session...")
         return new Promise(async (resolve, reject) => {
+            this.logger.log("Ending Session...")
+
             try {
                 if (!this.sessionID) {
                     return reject("Session has not been started yet.")
@@ -86,9 +87,9 @@ export class WatchSessionManager {
     }
 
     private getWatchResponse(type: DataType): Promise<DataPacket> {
-        this.logger.log("Waiting for response...")
-        
         return new Promise(async (resolve, reject) => {
+            this.logger.log("Waiting for response...")
+            
             if (!this.sessionID) {
                 return reject("Session has not been started yet.")
             }
