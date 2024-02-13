@@ -5,7 +5,6 @@ import { WatchConnectivityManager } from "./watchConnectivityManager"
 import uuid from 'react-native-uuid';
 import { Buffer } from 'buffer'
 import { BaseTrackingSession } from "./data/session";
-import { z } from "zod";
 
 export class WatchSessionManager {
     private readonly watchManager: WatchConnectivityManager
