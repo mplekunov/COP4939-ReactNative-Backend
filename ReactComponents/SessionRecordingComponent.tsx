@@ -18,7 +18,6 @@ export const SessionRecording: React.FC = () => {
     const [session, setSession] = useState<Session<BaseTrackingRecord, Video<string>>>()
     const [pass, setPass] = useState<Pass<number, Video<string>>>()
     const [isRecording, setIsRecording] = useState<boolean>(false)
-    const [isCameraPermissionGranted, setIsCameraPermissionGranted] = useState<boolean>(false)
 
     const camera = useRef<Camera>(null)
     
@@ -26,16 +25,7 @@ export const SessionRecording: React.FC = () => {
 
     const logger = useRef(new LoggerService("SessionRecordingComponent"))
 
-    useEffect(() => {
-        if (!isCameraPermissionGranted) {
-            setIsCameraPermissionGranted(true)
-
-            getPermissions((error) => {
-                logger.current.error(`${error}`)
-                setIsCameraPermissionGranted(false)
-            })
-        }
-    })
+    getPermissions((error) => logger.current.error(`${error}`))
 
     useEffect(() => {
         logger.current.log(JSON.stringify(pass))

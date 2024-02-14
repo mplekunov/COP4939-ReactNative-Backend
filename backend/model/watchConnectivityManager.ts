@@ -70,7 +70,12 @@ export class WatchConnectivityManager {
         return new Promise(async (resolve, reject) => {
             this.logger.log('Starting file sending process...')
 
-            await this.checkConnectionStatus()
+            try {
+                await this.checkConnectionStatus()
+            } catch (error) {
+                this.logger.error(`${error}`)
+                return reject(error)
+            }
     
             let id = uuid.v4()
     
