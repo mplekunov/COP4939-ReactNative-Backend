@@ -91,12 +91,6 @@ export const SessionRecording: React.FC = () => {
             .catch(error => logger.current.error(`${error}`))
         }
     }
-    
-    if (!isCameraPermissionGranted) {
-        return (<View>
-            <Text>Camera Permission has not been granted</Text>
-        </View>)
-    }
 
     return (
         <View>
