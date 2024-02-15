@@ -1,4 +1,4 @@
-import { LoggerService } from "../../logger/LoggerService";
+import { LoggerService } from "../../Logger/loggerService";
 import { FFmpegKit, FFmpegKitConfig, Level, ReturnCode } from "ffmpeg-kit-react-native";
 
 export class VideoManager {

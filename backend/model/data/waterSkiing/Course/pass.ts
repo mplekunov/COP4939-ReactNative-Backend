@@ -1,7 +1,7 @@
-import { Video } from "../../camera/video"
-import { Buoy } from "./Course/buoy"
-import { Gate } from "./Course/gate"
-import { WakeCross } from "./Course/wakeCross"
+import { Video } from "../../../Camera/video"
+import { Buoy } from "./buoy"
+import { Gate } from "./gate"
+import { WakeCross } from "./wakeCross"
 
 export class PassBuilder<CourseElementPositionType, VideoType> {
     private _score: number | undefined

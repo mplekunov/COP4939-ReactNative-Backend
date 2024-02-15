@@ -1,9 +1,8 @@
-import { z } from "zod";
-import { Dimension, Measurement } from "../units/unit";
-import { Unit3D } from "../units/unit3D";
-import { UnitAcceleration } from "../units/unitAcceleration";
-import { UnitSpeed } from "../units/unitSpeed";
-import { Attitude } from "./attitude";
+import { Measurement } from "../Units/unit";
+import { Unit3D } from "../Units/unit3D";
+import { UnitAcceleration } from "../Units/unitAcceleration";
+import { UnitSpeed } from "../Units/unitSpeed";
+import { Attitude } from "../WaterSkiing/Course/attitude";
 
 export class MotionRecord {
     speed: Measurement<UnitSpeed>

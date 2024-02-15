@@ -1,5 +1,5 @@
-import { Measurement, Unit } from "../../units/unit"
-import { UnitLength } from "../../units/unitLength"
+import { Measurement, Unit } from "../../Units/unit"
+import { UnitLength } from "../../Units/unitLength"
 
 export class Fin {
     readonly brand: string

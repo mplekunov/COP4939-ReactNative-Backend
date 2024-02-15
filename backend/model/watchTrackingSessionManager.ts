@@ -1,12 +1,12 @@
-import { LoggerService } from "../logger/LoggerService"
-import { BaseTrackingRecord } from "./data/trackingRecord"
-import { DataPacket, DataType } from "./data/watch/dataPacket"
+import { LoggerService } from "../Logger/loggerService"
+import { BaseTrackingRecord } from "./Data/Tracking/trackingRecord"
+import { DataPacket, DataType } from "./Data/Watch/dataPacket"
 import { WatchConnectivityManager } from "./watchConnectivityManager"
 import uuid from 'react-native-uuid';
 import { Buffer } from 'buffer'
-import { BaseTrackingSession } from "./data/session";
+import { BaseTrackingSession } from "./Data/Tracking/trackingSession";
 
-export class WatchSessionManager {
+export class WatchTrackingSessionManager {
     private readonly watchManager: WatchConnectivityManager = WatchConnectivityManager.getInstance()
     private readonly logger = new LoggerService("WatchSessionManager")
 

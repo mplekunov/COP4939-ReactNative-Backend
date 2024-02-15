@@ -1,19 +1,19 @@
-import { LoggerService } from "../logger/LoggerService";
-import { Video } from "./camera/video";
-import { VideoManager } from "./camera/videoManager";
-import { BaseTrackingRecord } from "./data/trackingRecord";
-import { Dimension, Measurement, max } from "./data/units/unit";
-import { UnitAcceleration } from "./data/units/unitAcceleration";
-import { UnitAngle } from "./data/units/unitAngle";
-import { UnitLength } from "./data/units/unitLength";
-import { UnitSpeed } from "./data/units/unitSpeed";
-import { WaterSkiingCourse } from "./data/waterSkiing/Course/waterSkiingCourse";
-import { Pass, PassBuilder } from "./data/waterSkiing/pass";
-import { Gate } from "./data/waterSkiing/Course/gate";
-import { WakeCross } from "./data/waterSkiing/Course/wakeCross";
-import { Buoy } from "./data/waterSkiing/Course/buoy";
-import { FileSystem } from "../fileSystem/fileSystem";
-import { Session } from "./data/session";
+import { LoggerService } from "../Logger/loggerService";
+import { Video } from "./Camera/video";
+import { VideoManager } from "./Camera/videoManager";
+import { BaseTrackingRecord } from "./Data/Tracking/trackingRecord";
+import { Dimension, Measurement, max } from "./Data/Units/unit";
+import { UnitAcceleration } from "./Data/Units/unitAcceleration";
+import { UnitAngle } from "./Data/Units/unitAngle";
+import { UnitLength } from "./Data/Units/unitLength";
+import { UnitSpeed } from "./Data/Units/unitSpeed";
+import { WaterSkiingCourse } from "./Data/WaterSkiing/Course/waterSkiingCourse";
+import { Pass, PassBuilder } from "./Data/WaterSkiing/Course/pass";
+import { Gate } from "./Data/WaterSkiing/Course/gate";
+import { WakeCross } from "./Data/WaterSkiing/Course/wakeCross";
+import { Buoy } from "./Data/WaterSkiing/Course/buoy";
+import { FileSystem } from "../FileSystem/fileSystem";
+import { TrackingSession } from "./Data/Tracking/trackingSession";
 
 export class WaterSkiingPassProcessorForVideo {
     private readonly logger: LoggerService = new LoggerService("WaterSkiingPassProcessorForVideo")
@@ -23,7 +23,7 @@ export class WaterSkiingPassProcessorForVideo {
     
     private readonly RANGE: Measurement<UnitLength> = new Measurement<UnitLength>(1.0, UnitLength.meters)
 
-    public process(course: WaterSkiingCourse<number>, totalScore: number, session: Session<BaseTrackingRecord, Video<string>>) : Promise<Pass<number, Video<string>>> {
+    public process(course: WaterSkiingCourse<number>, totalScore: number, session: TrackingSession<BaseTrackingRecord, Video<string>>) : Promise<Pass<number, Video<string>>> {
         return new Promise(async (resolve, reject) => {
             this.logger.log("Starting pass processing...")
 

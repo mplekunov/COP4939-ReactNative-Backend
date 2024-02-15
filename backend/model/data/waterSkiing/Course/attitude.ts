@@ -1,5 +1,5 @@
-import { Measurement } from "../units/unit";
-import { UnitAngle } from "../units/unitAngle";
+import { Measurement } from "../../Units/unit";
+import { UnitAngle } from "../../Units/unitAngle";
 
 export class Attitude {
     roll: Measurement<UnitAngle>

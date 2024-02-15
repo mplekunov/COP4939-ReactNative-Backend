@@ -16,7 +16,7 @@ export class BaseTrackingSession<R> {
     }
 }
 
-export class Session<R extends BaseTrackingRecord, V> extends BaseTrackingSession<R> {
+export class TrackingSession<R extends BaseTrackingRecord, V> extends BaseTrackingSession<R> {
     readonly video: V
 
     constructor(baseTrackingSession: BaseTrackingSession<R>, video: V) {

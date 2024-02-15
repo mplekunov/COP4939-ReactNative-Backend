@@ -1,6 +1,6 @@
-import { Measurement } from "../../units/unit";
-import { UnitAngle } from "../../units/unitAngle";
-import { UnitSpeed } from "../../units/unitSpeed";
+import { Measurement } from "../../Units/unit";
+import { UnitAngle } from "../../Units/unitAngle";
+import { UnitSpeed } from "../../Units/unitSpeed";
 
 export class Gate<T> {
     readonly position: T

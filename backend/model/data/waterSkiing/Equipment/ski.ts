@@ -1,5 +1,5 @@
-import { Measurement } from "../../units/unit";
-import { UnitLength } from "../../units/unitLength";
+import { Measurement } from "../../Units/unit";
+import { UnitLength } from "../../Units/unitLength";
 
 export class Ski {
     readonly brand: string

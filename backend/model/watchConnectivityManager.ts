@@ -1,7 +1,7 @@
 import { getFileTransfers, getIsPaired, getIsWatchAppInstalled, getReachability, sendMessage, sendMessageData, startFileTransfer, watchEvents } from "react-native-watch-connectivity";
-import { LoggerService } from "../logger/LoggerService";
-import { FileSystem } from "../fileSystem/fileSystem";
-import { DataPacket } from "./data/watch/dataPacket";
+import { LoggerService } from "../Logger/loggerService";
+import { FileSystem } from "../FileSystem/fileSystem";
+import { DataPacket } from "./Data/Watch/dataPacket";
 import uuid from 'react-native-uuid';
 
 interface CallbackPair {

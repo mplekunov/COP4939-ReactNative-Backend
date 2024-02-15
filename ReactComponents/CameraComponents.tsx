@@ -1,5 +1,5 @@
 import { Camera } from "react-native-vision-camera"
-import { Video } from "../backend/model/camera/video"
+import { Video } from "../Backend/Model/Camera/video"
 
 export async function getPermissions(onError: (error: any) => void) {
     try {

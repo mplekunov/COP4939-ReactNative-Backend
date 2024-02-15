@@ -1,5 +1,5 @@
-import { Video } from "../backend/model/camera/video";
-import { WaterSkiingCourse } from "../backend/model/data/waterSkiing/Course/waterSkiingCourse";
+import { Video } from "../Backend/Model/Camera/video";
+import { WaterSkiingCourse } from "../Backend/Model/Data/WaterSkiing/Course/waterSkiingCourse";
 
 export function waterSkiingCourseGenerator(video: Video<string>): WaterSkiingCourse<number> {
     let buoyPositions: number[] = []    

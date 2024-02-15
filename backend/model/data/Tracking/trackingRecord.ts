@@ -1,7 +1,7 @@
 import { LocationRecord } from "./locationRecord"
-import { Measurement } from "./units/unit"
-import { UnitSpeed } from "./units/unitSpeed"
-import { MotionRecord } from "./waterSkiing/motionRecord"
+import { Measurement } from "../Units/unit"
+import { UnitSpeed } from "../Units/unitSpeed"
+import { MotionRecord } from "./motionRecord"
 
 export class BaseTrackingRecord {
     readonly motion: MotionRecord

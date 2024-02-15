@@ -1,27 +1,27 @@
 import { useEffect, useRef, useState } from "react"
-import { Video } from "../backend/model/camera/video"
+import { Video } from "../Backend/Model/Camera/video"
 import { StyleSheet, Text, View } from "react-native"
-import { LoggerService } from "../backend/logger/LoggerService";
+import { LoggerService } from "../Backend/Logger/loggerService";
 import { RecordButton } from "./RecordingButtonComponent";
 import { Camera, useCameraDevice } from "react-native-vision-camera";
-import { BaseTrackingRecord } from "../backend/model/data/trackingRecord";
-import { WatchSessionManager } from "../backend/model/sessionManager"
-import { BaseTrackingSession, Session } from "../backend/model/data/session";
-import { WaterSkiingPassProcessorForVideo } from "../backend/model/waterSkiingPassProcessorForVideo";
+import { BaseTrackingRecord } from "../Backend/Model/Data/Tracking/trackingRecord";
+import { WatchTrackingSessionManager } from "../Backend/Model/watchTrackingSessionManager"
+import { BaseTrackingSession, TrackingSession } from "../Backend/Model/Data/Tracking/trackingSession";
+import { WaterSkiingPassProcessorForVideo } from "../Backend/Model/waterSkiingPassProcessorForVideo";
 import { waterSkiingCourseGenerator } from "./testWaterSkiingCourseGenerator";
-import { Pass } from "../backend/model/data/waterSkiing/pass";
+import { Pass } from "../Backend/Model/Data/WaterSkiing/Course/pass";
 import { getPermissions, startVideoRecording, stopVideoRecording } from "./CameraComponents";
 
 export const SessionRecording: React.FC = () => {
     const [watchSession, setWatchSession] = useState<BaseTrackingSession<BaseTrackingRecord>>()
     const [video, setVideo] = useState<Video<string>>()
-    const [session, setSession] = useState<Session<BaseTrackingRecord, Video<string>>>()
+    const [session, setSession] = useState<TrackingSession<BaseTrackingRecord, Video<string>>>()
     const [pass, setPass] = useState<Pass<number, Video<string>>>()
     const [isRecording, setIsRecording] = useState<boolean>(false)
 
     const camera = useRef<Camera>(null)
     
-    const watchSessionManager = useRef(new WatchSessionManager())
+    const watchSessionManager = useRef(new WatchTrackingSessionManager())
 
     const logger = useRef(new LoggerService("SessionRecordingComponent"))
 
@@ -52,7 +52,7 @@ export const SessionRecording: React.FC = () => {
         }
 
         if (watchSession.id.toLocaleLowerCase() === video.id.toLocaleLowerCase()) {
-            setSession(new Session(watchSession, video))
+            setSession(new TrackingSession(watchSession, video))
         }
     }, [watchSession, video])
 

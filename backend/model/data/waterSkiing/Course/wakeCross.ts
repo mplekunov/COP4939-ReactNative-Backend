@@ -1,7 +1,7 @@
-import { Measurement } from "../../units/unit";
-import { UnitAcceleration } from "../../units/unitAcceleration";
-import { UnitAngle } from "../../units/unitAngle";
-import { UnitSpeed } from "../../units/unitSpeed";
+import { Measurement } from "../../Units/unit";
+import { UnitAcceleration } from "../../Units/unitAcceleration";
+import { UnitAngle } from "../../Units/unitAngle";
+import { UnitSpeed } from "../../Units/unitSpeed";
 
 export class WakeCross<T> {
     readonly position: T

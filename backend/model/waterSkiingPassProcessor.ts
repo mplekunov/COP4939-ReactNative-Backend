@@ -1,20 +1,20 @@
-import { FileSystem } from "../fileSystem/fileSystem";
-import { LoggerService } from "../logger/LoggerService";
-import { Video } from "./camera/video";
-import { VideoManager } from "./camera/videoManager";
-import { Session } from "./data/session";
-import { TrackingRecord } from "./data/trackingRecord";
-import { Coordinate } from "./data/units/coordinate";
-import { Dimension, Measurement, max } from "./data/units/unit";
-import { UnitAcceleration } from "./data/units/unitAcceleration";
-import { UnitAngle } from "./data/units/unitAngle";
-import { UnitLength } from "./data/units/unitLength";
-import { UnitSpeed } from "./data/units/unitSpeed";
-import { Buoy } from "./data/waterSkiing/Course/buoy";
-import { Gate } from "./data/waterSkiing/Course/gate";
-import { WakeCross } from "./data/waterSkiing/Course/wakeCross";
-import { WaterSkiingCourse } from "./data/waterSkiing/Course/waterSkiingCourse";
-import { Pass, PassBuilder } from "./data/waterSkiing/pass";
+import { FileSystem } from "../FileSystem/fileSystem";
+import { LoggerService } from "../Logger/loggerService";
+import { Video } from "./Camera/video";
+import { VideoManager } from "./Camera/videoManager";
+import { TrackingSession } from "./Data/Tracking/trackingSession";
+import { TrackingRecord } from "./Data/Tracking/trackingRecord";
+import { Coordinate } from "./Data/Units/coordinate";
+import { Dimension, Measurement, max } from "./Data/Units/unit";
+import { UnitAcceleration } from "./Data/Units/unitAcceleration";
+import { UnitAngle } from "./Data/Units/unitAngle";
+import { UnitLength } from "./Data/Units/unitLength";
+import { UnitSpeed } from "./Data/Units/unitSpeed";
+import { Buoy } from "./Data/WaterSkiing/Course/buoy";
+import { Gate } from "./Data/WaterSkiing/Course/gate";
+import { WakeCross } from "./Data/WaterSkiing/Course/wakeCross";
+import { WaterSkiingCourse } from "./Data/WaterSkiing/Course/waterSkiingCourse";
+import { Pass, PassBuilder } from "./Data/WaterSkiing/Course/pass";
 
 export class WaterSkiingPassProcessorForCoordinates {
     private readonly logger: LoggerService = new LoggerService("WaterSkiingPassProcessorForCoordinates")
@@ -24,7 +24,7 @@ export class WaterSkiingPassProcessorForCoordinates {
 
     private readonly RANGE: Measurement<UnitLength> = new Measurement<UnitLength>(1.0, UnitLength.meters)
     
-    public async process(course: WaterSkiingCourse<Coordinate>, session: Session<TrackingRecord, Video<string>>) : Promise<Pass<Coordinate, Video<string>>> {
+    public async process(course: WaterSkiingCourse<Coordinate>, session: TrackingSession<TrackingRecord, Video<string>>) : Promise<Pass<Coordinate, Video<string>>> {
         return new Promise(async (resolve, reject) => {
             let records = session.trackingRecords
             let video = session.video

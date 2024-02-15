@@ -1,6 +1,6 @@
-import { Coordinate } from "./units/coordinate";
-import { Measurement } from "./units/unit";
-import { UnitSpeed } from "./units/unitSpeed";
+import { Coordinate } from "../Units/coordinate";
+import { Measurement } from "../Units/unit";
+import { UnitSpeed } from "../Units/unitSpeed";
 
 export class LocationRecord {
     speed: Measurement<UnitSpeed>
