@@ -23,6 +23,7 @@ export class WaterSkiingPassProcessorForCoordinates {
     private readonly NUM_OF_BUOYS = 6
 
     private readonly RANGE: Measurement<UnitLength> = new Measurement<UnitLength>(1.0, UnitLength.meters)
+    
     public async process(course: WaterSkiingCourse<Coordinate>, session: Session<TrackingRecord, Video<string>>) : Promise<Pass<Coordinate, Video<string>>> {
         return new Promise(async (resolve, reject) => {
             let records = session.trackingRecords
