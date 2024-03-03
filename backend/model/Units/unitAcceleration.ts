@@ -1,4 +1,3 @@
-import { z } from "zod"
 import { Dimension, Unit, UnitConverter, UnitConverterLinear } from "./unit"
 
 export enum AccelerationUnits {

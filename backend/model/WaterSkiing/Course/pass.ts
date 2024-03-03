@@ -1,4 +1,4 @@
-import { Video } from "../../../Camera/video"
+import { Video } from "../../Camera/video"
 import { Buoy } from "./buoy"
 import { Gate } from "./gate"
 import { WakeCross } from "./wakeCross"

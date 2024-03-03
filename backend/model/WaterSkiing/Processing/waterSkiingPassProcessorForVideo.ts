@@ -1,19 +1,19 @@
-import { LoggerService } from "../Logger/loggerService";
-import { Video } from "./Camera/video";
-import { VideoManager } from "./Camera/videoManager";
-import { BaseTrackingRecord } from "./Data/Tracking/trackingRecord";
-import { Dimension, Measurement, max } from "./Data/Units/unit";
-import { UnitAcceleration } from "./Data/Units/unitAcceleration";
-import { UnitAngle } from "./Data/Units/unitAngle";
-import { UnitLength } from "./Data/Units/unitLength";
-import { UnitSpeed } from "./Data/Units/unitSpeed";
-import { WaterSkiingCourse } from "./Data/WaterSkiing/Course/waterSkiingCourse";
-import { Pass, PassBuilder } from "./Data/WaterSkiing/Course/pass";
-import { Gate } from "./Data/WaterSkiing/Course/gate";
-import { WakeCross } from "./Data/WaterSkiing/Course/wakeCross";
-import { Buoy } from "./Data/WaterSkiing/Course/buoy";
-import { FileSystem } from "../FileSystem/fileSystem";
-import { TrackingSession } from "./Data/Tracking/trackingSession";
+import { LoggerService } from "../../../Logger/loggerService";
+import { Video } from "../../Camera/video";
+import { VideoManager } from "../../Camera/videoManager";
+import { BaseTrackingRecord } from "../../Tracking/trackingRecord";
+import { Dimension, Measurement, max } from "../../Units/unit";
+import { UnitAcceleration } from "../../Units/unitAcceleration";
+import { UnitAngle } from "../../Units/unitAngle";
+import { UnitLength } from "../../Units/unitLength";
+import { UnitSpeed } from "../../Units/unitSpeed";
+import { WaterSkiingCourse } from "../Course/waterSkiingCourse";
+import { Pass, PassBuilder } from "../Course/pass";
+import { Gate } from "../Course/gate";
+import { WakeCross } from "../Course/wakeCross";
+import { Buoy } from "../Course/buoy";
+import { FileSystem } from "../../../FileSystem/fileSystem";
+import { TrackingSession } from "../../Tracking/trackingSession";
 
 export class WaterSkiingPassProcessorForVideo {
     private readonly logger: LoggerService = new LoggerService("WaterSkiingPassProcessorForVideo")

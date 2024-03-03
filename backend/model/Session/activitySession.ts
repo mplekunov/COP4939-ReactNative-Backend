@@ -1,6 +1,6 @@
 import { Location } from "../Location/location"
 
-export class Session {
+export class ActivitySession {
     id: string
     location: Location
     date: Date

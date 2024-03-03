@@ -1,20 +1,20 @@
-import { FileSystem } from "../FileSystem/fileSystem";
-import { LoggerService } from "../Logger/loggerService";
-import { Video } from "./Camera/video";
-import { VideoManager } from "./Camera/videoManager";
-import { TrackingSession } from "./Data/Tracking/trackingSession";
-import { TrackingRecord } from "./Data/Tracking/trackingRecord";
-import { Coordinate } from "./Data/Units/coordinate";
-import { Dimension, Measurement, max } from "./Data/Units/unit";
-import { UnitAcceleration } from "./Data/Units/unitAcceleration";
-import { UnitAngle } from "./Data/Units/unitAngle";
-import { UnitLength } from "./Data/Units/unitLength";
-import { UnitSpeed } from "./Data/Units/unitSpeed";
-import { Buoy } from "./Data/WaterSkiing/Course/buoy";
-import { Gate } from "./Data/WaterSkiing/Course/gate";
-import { WakeCross } from "./Data/WaterSkiing/Course/wakeCross";
-import { WaterSkiingCourse } from "./Data/WaterSkiing/Course/waterSkiingCourse";
-import { Pass, PassBuilder } from "./Data/WaterSkiing/Course/pass";
+import { FileSystem } from "../../../FileSystem/fileSystem";
+import { LoggerService } from "../../../Logger/loggerService";
+import { Video } from "../../Camera/video";
+import { VideoManager } from "../../Camera/videoManager";
+import { TrackingSession } from "../../Tracking/trackingSession";
+import { TrackingRecord } from "../../Tracking/trackingRecord";
+import { Coordinate } from "../../Units/coordinate";
+import { Dimension, Measurement, max } from "../../Units/unit";
+import { UnitAcceleration } from "../../Units/unitAcceleration";
+import { UnitAngle } from "../../Units/unitAngle";
+import { UnitLength } from "../../Units/unitLength";
+import { UnitSpeed } from "../../Units/unitSpeed";
+import { Buoy } from "../Course/buoy";
+import { Gate } from "../Course/gate";
+import { WakeCross } from "../Course/wakeCross";
+import { WaterSkiingCourse } from "../Course/waterSkiingCourse";
+import { Pass, PassBuilder } from "../Course/pass";
 
 export class WaterSkiingPassProcessorForCoordinates {
     private readonly logger: LoggerService = new LoggerService("WaterSkiingPassProcessorForCoordinates")

@@ -4,13 +4,17 @@ import { StyleSheet, Text, View } from "react-native"
 import { LoggerService } from "../Backend/Logger/loggerService";
 import { RecordButton } from "./RecordingButtonComponent";
 import { Camera, useCameraDevice } from "react-native-vision-camera";
-import { BaseTrackingRecord } from "../Backend/Model/Data/Tracking/trackingRecord";
-import { WatchTrackingSessionManager } from "../Backend/Model/watchTrackingSessionManager"
-import { BaseTrackingSession, TrackingSession } from "../Backend/Model/Data/Tracking/trackingSession";
-import { WaterSkiingPassProcessorForVideo } from "../Backend/Model/waterSkiingPassProcessorForVideo";
+import { BaseTrackingRecord } from "../Backend/Model/Tracking/trackingRecord";
+import { WatchTrackingSessionManager } from "../Backend/Model/Watch/watchTrackingSessionManager"
+import { BaseTrackingSession, TrackingSession } from "../Backend/Model/Tracking/trackingSession";
+import { WaterSkiingPassProcessorForVideo } from "../Backend/Model/WaterSkiing/Processing/waterSkiingPassProcessorForVideo";
 import { waterSkiingCourseGenerator } from "./testWaterSkiingCourseGenerator";
-import { Pass } from "../Backend/Model/Data/WaterSkiing/Course/pass";
+import { Pass } from "../Backend/Model/WaterSkiing/Course/pass";
 import { getPermissions, startVideoRecording, stopVideoRecording } from "./CameraComponents";
+import { Sex, User, UserSchema } from "../Backend/Model/User/user";
+import { Person } from "../Backend/Model/Person/person";
+import { Database } from "../Backend/Model/Database/database";
+import { Authentication } from "../Backend/Model/Server/authentication";
 
 export const SessionRecording: React.FC = () => {
     const [watchSession, setWatchSession] = useState<BaseTrackingSession<BaseTrackingRecord>>()
