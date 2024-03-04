@@ -1,10 +1,10 @@
 import { Sex } from "../User/user"
 
 export class Person {
-    readonly firstName: string
-    readonly lastName: string
-    readonly dateOfBirth: Date
-    readonly sex: Sex
+    firstName: string
+    lastName: string
+    dateOfBirth: Date
+    sex: Sex
 
     constructor(firstName: string, lastName: string, dateOfBirth: Date, sex: Sex) {
         this.firstName = firstName

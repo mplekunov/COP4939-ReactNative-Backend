@@ -42,21 +42,35 @@ export class Authentication {
             if (login.username.length === 0 || login.password.length === 0) {
                 return reject('All fields must contain information.')
             }
+            
             try {
                 let credentials = Realm.Credentials.function(login)
-                return await this.app.logIn(credentials)
-                    .then(user => {
-                        resolve({
-                            status: 200,
-                            data: login
-                        })
-                    })
-                    .catch(error => {
-                        let response = JSON.parse(error.message).message
-                        resolve(response as ServerResponse<Login, string>)
-                    })
-            } catch(error) {
-                return reject(error)
+                let user = await this.app.logIn(credentials)
+                await user.refreshCustomData()
+
+                console.log(user.customData)
+
+                return resolve({
+                    status: ServerCode.OK,
+                    data: login
+                })
+            } catch(error: any) {
+                if (error.response?.data?.status !== undefined) {
+                    return resolve(error.response.data as ServerResponse<User, string>)
+                }
+
+                if (typeof error.message === 'string') {
+                    return resolve({
+                        status: ServerCode.BadRequest,
+                        error: error?.message
+                    })    
+                }
+
+                let response = JSON.parse(error.message)
+                return resolve({
+                    status: response.status?.$numberLong ?? ServerCode.BadRequest,
+                    error: response?.error ?? response?.message
+                })
             }
         })
     }
@@ -68,15 +82,25 @@ export class Authentication {
             }
         
             try {
-                return await axios.post(this.APP_SERVICE_BASE_URL + "signup", user)
-                    .then((response) => {
-                        resolve(response.data as ServerResponse<User, string>)
-                    })
-                    .catch((error) => {
-                        resolve(error.response.data as ServerResponse<User, string>)
-                    })
-            } catch(error) {
-                return reject(error)
+                let response = (await axios.post(this.APP_SERVICE_BASE_URL + "signup", user)).data as ServerResponse<User, string>
+                return resolve(response)
+            } catch(error: any) {
+                if (error.response?.data?.status !== undefined) {
+                    return resolve(error.response.data as ServerResponse<User, string>)
+                }
+
+                if (typeof error.message === 'string') {
+                    return resolve({
+                        status: ServerCode.BadRequest,
+                        error: error?.message
+                    })    
+                }
+                
+                let response = JSON.parse(error.message)
+                return resolve({
+                    status: response.status?.$numberLong ?? ServerCode.BadRequest,
+                    error: response?.error ?? response?.message
+                })
             }
         })
     }

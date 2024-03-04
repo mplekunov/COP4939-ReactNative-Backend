@@ -15,7 +15,7 @@ import {
 import { SessionRecording } from './SessionRecordingComponent';
 import { Sex, User } from '../Backend/Model/User/user';
 import { Person } from '../Backend/Model/Person/person';
-import { Database } from '../Backend/Model/Database/database';
+import { UserDatabase } from '../Backend/Model/Database/database';
 import { Authentication } from '../Backend/Model/Server/authentication';
 import { LoggerService } from '../Backend/Logger/loggerService';
 
@@ -28,43 +28,56 @@ function App(): React.JSX.Element {
 
   const logger = useRef(new LoggerService("SessionRecordingComponent"))
 
-  const register = () => {
+  const register = async () => {
     let date = new Date()
     date.setMonth(6)
     date.setDate(5)
     date.setFullYear(1998)
 
     let myUser = new User(new Person("Michael", "Plekunov", date, Sex.MALE), "mekromic", "password")
-
-    let database = new Database()
+    let newUser = new User(new Person("Michell", "Plekunova", date, Sex.FEMALE), "mekromic1", "password1")
 
     let payload = {
         username: "mekromic",
         password: "password"
     }
 
-    authentication.current.signUp(myUser)
-    .then(
-        (response) => {
-            logger.current.log(JSON.stringify(response))
-        }
-    )
-    .catch((error) => {
-        logger.current.error(`${error}`)
-    })
+    await authentication.current.signUp(myUser)
+      .then((response) => logger.current.log("SIGNUP: " + JSON.stringify(response)))
+      .catch((error) => logger.current.error("SIGNUP: " + JSON.stringify(error)))
 
-    authentication.current.logIn(payload)
-    .then((response) => {
-        logger.current.log(`${response}`)
-      }
-    )
-    .catch((error) => {
-      logger.current.error(`${error}`)
-    })
+    await authentication.current.logIn(payload)
+      .then((response) => logger.current.log("LOGIN: " + JSON.stringify(response)))
+      .catch((error) => logger.current.error("LOGIN: " + JSON.stringify(error)))
+
+    let myDatabase = new UserDatabase(authentication.current.app)
+
+    await myDatabase.create(newUser)
+      .then((response) => logger.current.log("CREATE: " + JSON.stringify(response)))
+      .catch((response) => logger.current.log("CREATE: " + JSON.stringify(response)))
+
+    await myDatabase.read(newUser.username)
+      .then((response) => logger.current.log("READ: " + JSON.stringify(response)))
+      .catch((response) => logger.current.log("READ: " +JSON.stringify(response)))
+
+    await myDatabase.read(myUser.username)
+      .then((response) => logger.current.log("READ: " + JSON.stringify(response)))
+      .catch((response) => logger.current.log("READ: " +JSON.stringify(response)))
+
+
+    newUser.username = "yeah"
+
+    await myDatabase.update(myUser.username, newUser)
+      .then((response) => logger.current.log("UPDATE: " + JSON.stringify(response)))
+      .catch((response) => logger.current.log("UPDATE: " + JSON.stringify(response)))
+
+    // await myDatabase.delete(newUser.username)
+    //   .then((response) => logger.current.log("DELETE: " + JSON.stringify(response)))
+    //   .catch((response) => logger.current.log("DELETE: " + JSON.stringify(response)))
   }
 
   return (
-    <View style={styles.container}>
+    <View style={styles.container}> 
     <TouchableOpacity onPress={register} style={styles.recordButton}>
     </TouchableOpacity>
   </View>
