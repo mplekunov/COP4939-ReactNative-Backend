@@ -9,4 +9,22 @@ export class WaterSkiingEquipment {
         this.fin = fin
         this.ski = ski
     }
+
+    convertToSchema(): any {
+        return {
+            fin: this.fin.convertToSchema(),
+            ski: this.ski.convertToSchema()
+        }
+    }
+
+    static convertFromSchema(schema: any): WaterSkiingEquipment {
+        try {
+            return new WaterSkiingEquipment(
+                Fin.convertFromSchema(schema.fin),
+                Ski.convertFromSchema(schema.ski)
+            )
+        } catch(error : any) {
+            throw new Error(`WaterSkiingEquipment ~ ${error.message}`)
+        }
+    }
 }

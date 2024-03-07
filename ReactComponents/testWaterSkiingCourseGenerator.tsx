@@ -1,7 +1,8 @@
 import { Video } from "../Backend/Model/Camera/video";
+import { Coordinate } from "../Backend/Model/Units/coordinate";
 import { WaterSkiingCourse } from "../Backend/Model/WaterSkiing/Course/waterSkiingCourse";
 
-export function waterSkiingCourseGenerator(video: Video<string>): WaterSkiingCourse<number> {
+export function waterSkiingCourseGenerator(video: Video): WaterSkiingCourse<Coordinate> {
     let buoyPositions: number[] = []    
     let wakeCrossPositions: number[] = []
     let entryGatePosition: number = 1

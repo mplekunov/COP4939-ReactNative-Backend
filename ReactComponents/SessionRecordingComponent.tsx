@@ -4,28 +4,23 @@ import { StyleSheet, Text, View } from "react-native"
 import { LoggerService } from "../Backend/Logger/loggerService";
 import { RecordButton } from "./RecordingButtonComponent";
 import { Camera, useCameraDevice } from "react-native-vision-camera";
-import { BaseTrackingRecord } from "../Backend/Model/Tracking/trackingRecord";
-import { WatchTrackingSessionManager } from "../Backend/Model/Watch/watchTrackingSessionManager"
-import { BaseTrackingSession, TrackingSession } from "../Backend/Model/Tracking/trackingSession";
-import { WaterSkiingPassProcessorForVideo } from "../Backend/Model/WaterSkiing/Processing/waterSkiingPassProcessorForVideo";
+import { TrackingRecord } from "../Backend/Model/Tracking/trackingRecord";
+import { TrackingSession } from "../Backend/Model/Tracking/trackingSession";
 import { waterSkiingCourseGenerator } from "./testWaterSkiingCourseGenerator";
 import { Pass } from "../Backend/Model/WaterSkiing/Course/pass";
 import { getPermissions, startVideoRecording, stopVideoRecording } from "./CameraComponents";
-import { Sex, User, UserSchema } from "../Backend/Model/User/user";
-import { Person } from "../Backend/Model/Person/person";
-import { Database } from "../Backend/Model/Database/database";
-import { Authentication } from "../Backend/Model/Server/authentication";
+import { WaterSkiingPassProcessor } from "../Backend/Model/WaterSkiing/Processing/waterSkiingPassProcessor";
 
 export const SessionRecording: React.FC = () => {
-    const [watchSession, setWatchSession] = useState<BaseTrackingSession<BaseTrackingRecord>>()
-    const [video, setVideo] = useState<Video<string>>()
-    const [session, setSession] = useState<TrackingSession<BaseTrackingRecord, Video<string>>>()
-    const [pass, setPass] = useState<Pass<number, Video<string>>>()
+    const [watchSession, setWatchSession] = useState<TrackingRecord>()
+    const [video, setVideo] = useState<Video>()
+    const [session, setSession] = useState<TrackingSession>()
+    const [pass, setPass] = useState<Pass>()
     const [isRecording, setIsRecording] = useState<boolean>(false)
 
     const camera = useRef<Camera>(null)
     
-    const watchSessionManager = useRef(new WatchTrackingSessionManager())
+    // const trackingSessioManager = useRef(new TrackingSessionManager())
 
     const logger = useRef(new LoggerService("SessionRecordingComponent"))
 
@@ -42,10 +37,10 @@ export const SessionRecording: React.FC = () => {
 
         logger.current.log("Session has been received...")
 
-        let processor = new WaterSkiingPassProcessorForVideo()
+        let processor = new WaterSkiingPassProcessor()
 
         logger.current.log("Processing session to get Pass...")
-        processor.process(waterSkiingCourseGenerator(session.video), 0, session)
+        processor.process(waterSkiingCourseGenerator(session.video), session)
             .then((pass) => setPass(pass))
             .catch((error) => logger.current.error(`${error}`))
     }, [session])
@@ -66,9 +61,9 @@ export const SessionRecording: React.FC = () => {
         }
       
         if (!isRecording) {
-            watchSessionManager.current.startSession()
+            trackingSessioManager.current.startSession()
             .then(() => {
-                let sessionID = watchSessionManager.current.getSessionID()
+                let sessionID = trackingSessioManager.current.getSessionID()
 
                 if (camera.current && sessionID) {
                     startVideoRecording(
@@ -83,11 +78,11 @@ export const SessionRecording: React.FC = () => {
             })
             .catch(error => logger.current.error(`${error}`))
         } else {
-            watchSessionManager.current.stopSession()
-            .then(async (watchSession: BaseTrackingSession<BaseTrackingRecord>) => {
+            trackingSessioManager.current.stopSession()
+            .then(async (trackerSession: BaseTrackingSession<TrackingRecord>) => {
                 if (camera.current) {
                     await stopVideoRecording(camera.current, (error: any) => logger.current.error(`${error}`))
-                    setWatchSession(watchSession)
+                    setWatchSession(trackerSession)
 
                     setIsRecording(false)
                 }

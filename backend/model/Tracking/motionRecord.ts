@@ -1,52 +1,66 @@
 import { Measurement } from "../Units/unit";
-import { Unit3D } from "../Units/unit3D";
 import { UnitAcceleration } from "../Units/unitAcceleration";
+import { UnitAngle } from "../Units/unitAngle";
+import { UnitLength } from "../Units/unitLength";
 import { UnitSpeed } from "../Units/unitSpeed";
-import { Attitude } from "../WaterSkiing/Course/attitude";
 
 export class MotionRecord {
     speed: Measurement<UnitSpeed>
-    attitude: Attitude
-    acceleration: Unit3D<Measurement<UnitAcceleration>>
-    gForce: Unit3D<Measurement<UnitAcceleration>>
+    altitude: Measurement<UnitLength>
+    pitch: Measurement<UnitAngle>
+    roll: Measurement<UnitAngle>
+    heading: Measurement<UnitAngle>
+    course: Measurement<UnitAngle>
+    acceleration: Measurement<UnitAcceleration>
+    gForce: Measurement<UnitAcceleration>
 
     constructor(
         speed: Measurement<UnitSpeed>,
-        attitude: Attitude,
-        acceleration: Unit3D<Measurement<UnitAcceleration>>,
-        gForce: Unit3D<Measurement<UnitAcceleration>>
+        altitude: Measurement<UnitLength>,
+        pitch: Measurement<UnitAngle>,
+        roll: Measurement<UnitAngle>,
+        heading: Measurement<UnitAngle>,
+        course: Measurement<UnitAngle>,
+        acceleration: Measurement<UnitAcceleration>,
+        gForce: Measurement<UnitAcceleration>
     ) {
         this.speed = speed
-        this.attitude = attitude
+        this.altitude = altitude
         this.acceleration = acceleration
         this.gForce = gForce
+        this.pitch = pitch
+        this.roll = roll
+        this.heading = heading
+        this.course = course
     }
 
-    static parse(json: string): MotionRecord {
+    convertToSchema(): any {
+        return {
+            speed: this.speed.convertToSchema(),
+            altitude: this.altitude.convertToSchema(),
+            pitch: this.pitch.convertToSchema(),
+            roll: this.roll.convertToSchema(),
+            heading: this.heading.convertToSchema(),
+            course: this.course.convertToSchema(),
+            acceleration: this.acceleration.convertToSchema(),
+            gForce: this.gForce.convertToSchema()
+        }
+    }
+
+    static convertFromSchema(schema: any): MotionRecord {
         try {
-            let anyJSON = JSON.parse(json)
-
-            let speed = new Measurement(anyJSON.speed.value as number, UnitSpeed.parse(JSON.stringify(anyJSON.speed.unit)))
-            let attitude = Attitude.parse(JSON.stringify(anyJSON.attitude))
-            let acceleration = new Unit3D(
-                new Measurement(anyJSON.acceleration.x.value as number, UnitAcceleration.parse(JSON.stringify(anyJSON.acceleration.x.unit))),
-                new Measurement(anyJSON.acceleration.y.value as number, UnitAcceleration.parse(JSON.stringify(anyJSON.acceleration.y.unit))),
-                new Measurement(anyJSON.acceleration.z.value as number, UnitAcceleration.parse(JSON.stringify(anyJSON.acceleration.z.unit)))
-            )
-            let gForce = new Unit3D(
-                new Measurement(anyJSON.gForce.x.value as number, UnitAcceleration.parse(JSON.stringify(anyJSON.gForce.x.unit))),
-                new Measurement(anyJSON.gForce.y.value as number, UnitAcceleration.parse(JSON.stringify(anyJSON.gForce.y.unit))),
-                new Measurement(anyJSON.gForce.z.value as number, UnitAcceleration.parse(JSON.stringify(anyJSON.gForce.z.unit)))
-            )
-
             return new MotionRecord(
-                speed,
-                attitude,
-                acceleration,
-                gForce
+                new Measurement(parseFloat(schema.speed.value), UnitSpeed.parse(schema.speed.unit)),
+                new Measurement(parseFloat(schema.altitude.value), UnitLength.parse(schema.altitude.unit)),
+                new Measurement(parseFloat(schema.pitch.value), UnitAngle.parse(schema.pitch.unit)),
+                new Measurement(parseFloat(schema.roll.value), UnitAngle.parse(schema.roll.unit)),
+                new Measurement(parseFloat(schema.heading.value), UnitAngle.parse(schema.heading.unit)),
+                new Measurement(parseFloat(schema.course.value), UnitAngle.parse(schema.course.unit)),
+                new Measurement(parseFloat(schema.acceleration.value), UnitAcceleration.parse(schema.acceleration.unit)),
+                new Measurement(parseFloat(schema.gForce.value), UnitAcceleration.parse(schema.gForce.unit))
             )
-        } catch (error) {
-            throw new Error(`MotionRecord - ${error}`)
+        } catch(error : any) {
+            throw new Error(`MotionRecord ~ ${error.message}`)
         }
     }
 }

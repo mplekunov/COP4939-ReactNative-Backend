@@ -1,43 +1,38 @@
 import { LocationRecord } from "./locationRecord"
-import { Measurement } from "../Units/unit"
-import { UnitSpeed } from "../Units/unitSpeed"
 import { MotionRecord } from "./motionRecord"
 
-export class BaseTrackingRecord {
-    readonly motion: MotionRecord
-    readonly timeOfRecrodingInMilliseconds: number
-
-    constructor(motion: MotionRecord, timeOfRecrodingInMilliseconds: number) {
-        this.motion = motion
-        this.timeOfRecrodingInMilliseconds = timeOfRecrodingInMilliseconds
-    }
-
-    static parse(json: string) : BaseTrackingRecord {
-        try {
-            let anyJSON = JSON.parse(json)
-
-            let motion = MotionRecord.parse(JSON.stringify(anyJSON.motion))
-            let timeOfRecrodingInMilliseconds = anyJSON.timeOfRecrodingInMilliseconds as number
-
-            return new BaseTrackingRecord(motion, timeOfRecrodingInMilliseconds)
-        } catch (error) {
-            throw new Error(`BaseTrackingRecord - ${error}`)
-        }
-    }
-}
-
-export class TrackingRecord extends BaseTrackingRecord {
-    readonly speed: Measurement<UnitSpeed>
+export class TrackingRecord {
     readonly location: LocationRecord
+    readonly motion: MotionRecord
+    readonly date: Date
 
     constructor(
         motion: MotionRecord,
-        speed: Measurement<UnitSpeed>,
         location: LocationRecord,
-        timeOfRecrodingInMilliseconds: number
+        date: Date
     ) {
-        super(motion, timeOfRecrodingInMilliseconds)
-        this.speed = speed
         this.location = location
+        this.motion = motion
+        this.date = date
+    }
+
+    convertToSchema() : any {
+        return {
+            location: this.location.convertToSchema(),
+            motion: this.motion.convertToSchema(),
+            date: this.date
+        }
+    }
+
+    static convertFromSchema(schema: any): TrackingRecord {
+        try {
+            return new TrackingRecord(
+                MotionRecord.convertFromSchema(schema.motion),
+                LocationRecord.convertFromSchema(schema.location),
+                new Date(schema.date)
+            )
+        } catch(error : any) {
+            throw new Error(`TrackingRecord ~ ${error.message}`)
+        }
     }
 }

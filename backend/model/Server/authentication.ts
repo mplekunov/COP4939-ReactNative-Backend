@@ -1,21 +1,7 @@
 import axios from "axios"
 import Realm from "realm"
 import { Login, User } from "../User/user"
-
-export enum ServerCode {
-    OK = 200,
-    CREATED = 201,
-    BadRequest = 400,
-    Unauthorized = 401,
-    Forbidden = 403,
-    NotFound = 404
-}
-
-export interface ServerResponse<DataType, ErrorType> {
-    status: ServerCode
-    data?: DataType
-    error?: ErrorType
-}
+import { ServerCode, ServerResponse } from "../Network/server"
 
 export class Authentication {
     private readonly APP_SERVICE_APP_ID = "reactnativeapp-utclw"
@@ -47,8 +33,6 @@ export class Authentication {
                 let credentials = Realm.Credentials.function(login)
                 let user = await this.app.logIn(credentials)
                 await user.refreshCustomData()
-
-                console.log(user.customData)
 
                 return resolve({
                     status: ServerCode.OK,

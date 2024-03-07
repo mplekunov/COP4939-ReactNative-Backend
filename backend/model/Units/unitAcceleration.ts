@@ -17,24 +17,23 @@ export class UnitAcceleration implements Dimension {
         this.converter = converter
     }
 
-    static parse(json: string): UnitAcceleration {
+    static parse(symbol: string): UnitAcceleration {
         try {
-            let anyJSON = JSON.parse(json)
 
-            if (!anyJSON.symbol) {
+            if (!symbol) {
                 throw new Error("Symbol is undefined.")
             }
 
-            switch (anyJSON.symbol as string) {
+            switch (symbol as string) {
                 case AccelerationUnits.gravity:
                     return UnitAcceleration.gravity
                 case AccelerationUnits.metersPerSecondSquared:
                     return UnitAcceleration.metersPersecondSquared
                 default:
-                    throw new Error("Symbol is not found.")
+                    throw new Error(`Symbol is not found. ${symbol}`)
             }
         } catch (error) {
-            throw new Error(`UnitAcceleration - ${error}`)
+            throw new Error(`UnitAcceleration ~ ${error}`)
         }
     }
 

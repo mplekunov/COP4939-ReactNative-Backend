@@ -16,7 +16,7 @@ import { WakeCross } from "../Course/wakeCross";
 import { WaterSkiingCourse } from "../Course/waterSkiingCourse";
 import { Pass, PassBuilder } from "../Course/pass";
 
-export class WaterSkiingPassProcessorForCoordinates {
+export class WaterSkiingPassProcessor {
     private readonly logger: LoggerService = new LoggerService("WaterSkiingPassProcessorForCoordinates")
     private readonly videoManager: VideoManager = new VideoManager()
 
@@ -24,13 +24,13 @@ export class WaterSkiingPassProcessorForCoordinates {
 
     private readonly RANGE: Measurement<UnitLength> = new Measurement<UnitLength>(1.0, UnitLength.meters)
     
-    public async process(course: WaterSkiingCourse<Coordinate>, session: TrackingSession<TrackingRecord, Video<string>>) : Promise<Pass<Coordinate, Video<string>>> {
+    public async process(course: WaterSkiingCourse<Coordinate>, session: TrackingSession) : Promise<Pass> {
         return new Promise(async (resolve, reject) => {
             let records = session.trackingRecords
             let video = session.video
             
-            let passBuilder = new PassBuilder<Coordinate, Video<string>>()
-            let videoCreationDate = Math.floor(video.creationDate.getTime()) 
+            let passBuilder = new PassBuilder()
+            let videoCreationDate = video.creationDate
     
             if (records.length == 0) {
                 return reject("Data array cannot be empty")
@@ -41,11 +41,12 @@ export class WaterSkiingPassProcessorForCoordinates {
             }
     
             let maxSpeed = new Measurement<UnitSpeed>(0.0, records[0].motion.speed.unit)
-            let maxRoll = new Measurement<UnitAngle>(0.0, records[0].motion.attitude.roll.unit)
-            let maxPitch = new Measurement<UnitAngle>(0.0, records[0].motion.attitude.pitch.unit)
-            let maxGForce = new Measurement<UnitAcceleration>(0.0, records[0].motion.gForce.x.unit)
-            let maxAcceleration = new Measurement<UnitAcceleration>(0.0, records[0].motion.acceleration.x.unit)
-            let maxAngle = new Measurement<UnitAngle>(0.0, records[0].motion.attitude.yaw.unit)
+            let maxRoll = new Measurement<UnitAngle>(0.0, records[0].motion.roll.unit)
+            let maxPitch = new Measurement<UnitAngle>(0.0, records[0].motion.pitch.unit)
+            let maxGForce = new Measurement<UnitAcceleration>(0.0, records[0].motion.gForce.unit)
+            let maxAcceleration = new Measurement<UnitAcceleration>(0.0, records[0].motion.acceleration.unit)
+            let maxCourse = new Measurement<UnitAngle>(0.0, records[0].motion.course.unit)
+            let maxHeading = new Measurement<UnitAngle>(0.0, records[0].motion.heading.unit)
     
             let wakeCrossIndex = 0
             let buoyIndex = 0
@@ -57,7 +58,7 @@ export class WaterSkiingPassProcessorForCoordinates {
             let trimmedRecords = Array<TrackingRecord>()
     
             records.forEach(record => {
-                if (record.timeOfRecrodingInMilliseconds >= videoCreationDate) {
+                if (record.date >= videoCreationDate) {
                     trimmedRecords.push(record)
                 }
             })
@@ -65,17 +66,12 @@ export class WaterSkiingPassProcessorForCoordinates {
             trimmedRecords.forEach(record => {
                 if (crossedEntryGate) {
                     maxSpeed = max(record.motion.speed, maxSpeed)
-                    maxPitch = max(record.motion.attitude.pitch, maxPitch)
-                    maxRoll = max(record.motion.attitude.roll, maxRoll)
-                    maxAngle = max(record.motion.attitude.yaw, maxAngle)
-                    maxGForce = max(
-                        this.getTotalFromPythagorean(record.motion.gForce.x, record.motion.gForce.y, record.motion.gForce.z),
-                        maxGForce
-                    )
-                    maxAcceleration = max(
-                        this.getTotalFromPythagorean(record.motion.acceleration.x, record.motion.acceleration.y, record.motion.acceleration.z),
-                        maxAcceleration
-                    )
+                    maxPitch = max(record.motion.pitch, maxPitch)
+                    maxRoll = max(record.motion.roll, maxRoll)
+                    maxHeading = max(record.motion.heading, maxHeading)
+                    maxCourse = max(record.motion.course, maxCourse)
+                    maxGForce = max(record.motion.gForce, maxGForce)
+                    maxAcceleration = max(record.motion.acceleration, maxAcceleration)
                 }
     
                 if (this.inRange(record.location.coordinate, course.entryGatePosition, this.RANGE)) {
@@ -83,9 +79,9 @@ export class WaterSkiingPassProcessorForCoordinates {
                         new Gate(
                             course.entryGatePosition,
                             record.motion.speed,
-                            record.motion.attitude.roll,
-                            record.motion.attitude.pitch,
-                            record.timeOfRecrodingInMilliseconds
+                            record.motion.roll,
+                            record.motion.pitch,
+                            record.date
                         )
                     )
     
@@ -99,7 +95,7 @@ export class WaterSkiingPassProcessorForCoordinates {
                             maxSpeed,
                             maxRoll,
                             maxPitch,
-                            record.timeOfRecrodingInMilliseconds
+                            record.date
                         )
                     )
                 }
@@ -111,10 +107,10 @@ export class WaterSkiingPassProcessorForCoordinates {
                             maxSpeed,
                             maxRoll,
                             maxPitch,
-                            maxAngle,
+                            maxCourse,
                             maxGForce,
                             maxAcceleration,
-                            record.timeOfRecrodingInMilliseconds
+                            record.date
                         )
                     )
 
@@ -128,7 +124,7 @@ export class WaterSkiingPassProcessorForCoordinates {
                             maxSpeed,
                             maxRoll,
                             maxPitch,
-                            record.timeOfRecrodingInMilliseconds
+                            record.date
                         )
                     )
     
@@ -145,8 +141,8 @@ export class WaterSkiingPassProcessorForCoordinates {
     
             try {
                 let trimmedVideo = await this.trimVideo(
-                    exitGate.timeOfRecordingInMilliseconds,
-                    entryGate.timeOfRecordingInMilliseconds,
+                    exitGate.date.getTime(),
+                    entryGate.date.getTime(),
                     video
                 )
 
@@ -169,7 +165,7 @@ export class WaterSkiingPassProcessorForCoordinates {
         })
     }
 
-    private trimVideo(startTime: number, endTime: number, video: Video<string>) : Promise<Video<string>> {
+    private trimVideo(startTime: number, endTime: number, video: Video) : Promise<Video> {
         return new Promise(async (resolve, reject) => {
             let documentsDirectory = FileSystem.getDocumentDir()
 
@@ -191,7 +187,7 @@ export class WaterSkiingPassProcessorForCoordinates {
                     return reject("Couldn't trim video.")
                 }
 
-                return resolve(new Video<string>(video.id, video.creationDate, movieOutputURL, end - start))
+                return resolve(new Video(video.id, video.creationDate, movieOutputURL, end - start))
             } catch (error) {
                 this.logger.error(`${error}`)
                 return reject(error)

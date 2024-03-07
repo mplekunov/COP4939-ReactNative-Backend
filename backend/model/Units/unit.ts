@@ -1,6 +1,3 @@
-import { Dimensions } from "react-native"
-import { z } from "zod"
-
 export interface Unit {
     symbol: string
 }
@@ -40,6 +37,13 @@ export class Measurement<UnitType extends Dimension> {
     constructor(value: number, unit: UnitType) {
         this.value = value
         this.unit = unit
+    }
+
+    convertToSchema() : any {
+        return {
+            value: this.value,
+            unit: this.unit.symbol
+        }
     }
 
     converted(to: UnitType) : Measurement<UnitType> {

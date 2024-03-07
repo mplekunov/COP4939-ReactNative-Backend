@@ -1,24 +1,17 @@
-import { ServerCode, ServerResponse } from "../Server/authentication"
+import { ServerCode, ServerResponse } from "../Network/server"
 import { User } from "../User/user"
 
-export interface Database<Type> {
-    create(object: Type): Promise<ServerResponse<Type, string>>
-    read(id: string): Promise<ServerResponse<Type, string>>
-    update(id: string, object: Type): Promise<ServerResponse<Type, string>>
-    delete(id: string): Promise<ServerResponse<Type, string>>
-}
-
-export class UserDatabase implements Database<User> {
+export class UserDatabase {
     private app: Realm.App
 
     constructor(app: Realm.App) {
         this.app = app
     }
 
-    create(object: User): Promise<ServerResponse<User, string>> {
+    public create(user: User): Promise<ServerResponse<User, string>> {
         return new Promise(async (resolve, reject) => {
             try {
-                let response = await this.app.currentUser?.callFunction('createUser', object) as ServerResponse<User, string>
+                let response = await this.app.currentUser?.callFunction('createUser', user) as ServerResponse<User, string>
                 return resolve(response)
             } catch(error: any) {
                 return reject({
@@ -29,10 +22,10 @@ export class UserDatabase implements Database<User> {
         })
     }
 
-    read(id: string): Promise<ServerResponse<User, string>> {
+    public read(username: string): Promise<ServerResponse<User, string>> {
         return new Promise(async (resolve, reject) => {
             try {
-                let response = await this.app.currentUser?.callFunction('getUser', id) as ServerResponse<User, string>
+                let response = await this.app.currentUser?.callFunction('getUser', username) as ServerResponse<User, string>
                 return resolve(response)
             } catch(error: any) {
                 return reject({
@@ -43,7 +36,7 @@ export class UserDatabase implements Database<User> {
         })
     }
 
-    update(id: string, object: User): Promise<ServerResponse<User, string>> {
+    public update(id: string, object: User): Promise<ServerResponse<User, string>> {
         return new Promise(async (resolve, reject) => {
             try {
                 let response = await this.app.currentUser?.callFunction('updateUser', id, object) as ServerResponse<User, string>
@@ -57,10 +50,10 @@ export class UserDatabase implements Database<User> {
         })
     }
 
-    delete(id: string): Promise<ServerResponse<User, string>> {
+    public delete(username: string): Promise<ServerResponse<User, string>> {
         return new Promise(async (resolve, reject) => {
             try {
-                let response = await this.app.currentUser?.callFunction('deleteUser', id) as ServerResponse<User, string>
+                let response = await this.app.currentUser?.callFunction('deleteUser', username) as ServerResponse<User, string>
                 return resolve(response)
             } catch(error: any) {
                 return reject({

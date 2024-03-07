@@ -25,28 +25,30 @@ export class UnitAngle implements Dimension {
         this.converter = converter
     }
 
-    static parse(json: string): UnitAngle {
-        let anyJSON = JSON.parse(json)
+    static parse(symbol: string): UnitAngle {
+        try {
+            if (!symbol) {
+                throw new Error("Symbol is undefined.")
+            }
 
-        if (!anyJSON.symbol) {
-            throw new Error("Symbol is undefined.")
-        }
-
-        switch (anyJSON.symbol as string) {
-            case AngleUnits.arcMinutes:
-                return UnitAngle.arcMinutes
-            case AngleUnits.arcSeconds:
-                return UnitAngle.arcSeconds
-            case AngleUnits.degrees:
-                return UnitAngle.degrees
-            case AngleUnits.gradians:
-                return UnitAngle.gradians
-            case AngleUnits.radians:
-                return UnitAngle.radians
-            case AngleUnits.revolutions:
-                return UnitAngle.revolutions
-            default:
-                throw new Error("Symbol is not found.")
+            switch (symbol as string) {
+                case AngleUnits.arcMinutes:
+                    return UnitAngle.arcMinutes
+                case AngleUnits.arcSeconds:
+                    return UnitAngle.arcSeconds
+                case AngleUnits.degrees:
+                    return UnitAngle.degrees
+                case AngleUnits.gradians:
+                    return UnitAngle.gradians
+                case AngleUnits.radians:
+                    return UnitAngle.radians
+                case AngleUnits.revolutions:
+                    return UnitAngle.revolutions
+                default:
+                    throw new Error(`Symbol is not found. ${symbol}`)
+            }
+        } catch(error : any) {
+            throw new Error(`UnitAngle ~ ${error.message}`)
         }
     }
 

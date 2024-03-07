@@ -21,15 +21,14 @@ export class UnitSpeed implements Dimension {
         this.converter = converter
     }
 
-    static parse(json: string): UnitSpeed {
+    static parse(symbol: string): UnitSpeed {
         try {
-            let anyJSON = JSON.parse(json)
 
-            if (!anyJSON.symbol) {
+            if (!symbol) {
                 throw new Error("Symbol is undefined.")
             }
 
-            switch (anyJSON.symbol as string) {
+            switch (symbol as string) {
                 case SpeedUnits.kilometersPerHour:
                     return UnitSpeed.kilometersPerHour
                 case SpeedUnits.knots:
@@ -39,10 +38,10 @@ export class UnitSpeed implements Dimension {
                 case SpeedUnits.milesPerHour:
                     return UnitSpeed.milesPerHour
                 default:
-                    throw new Error("Symbol is not found.")
+                    throw new Error(`Symbol is not found. ${symbol}`)
             }
         } catch (error) {
-            throw new Error(`UnitSpeed - ${error}`)
+            throw new Error(`UnitSpeed ~ ${error}`)
         }
     }
 

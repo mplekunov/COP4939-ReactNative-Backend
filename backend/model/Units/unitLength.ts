@@ -46,4 +46,50 @@ export class UnitLength implements Dimension {
     baseUnit(): Dimension {
         return UnitLength.meters
     }
+
+    static parse(symbol: string): UnitLength {
+        try {
+
+            if (!symbol) {
+                throw new Error("Symbol is undefined.")
+            }
+
+            switch (symbol as string) {
+                case LengthUnits.centimeters:
+                    return UnitLength.centimeters
+                case LengthUnits.decameters:
+                    return UnitLength.decameters
+                case LengthUnits.decimeters:
+                    return UnitLength.decimeters
+                case LengthUnits.feet:
+                    return UnitLength.feet
+                case LengthUnits.hectometers:
+                    return UnitLength.hectometers
+                case LengthUnits.inches:
+                    return UnitLength.inches
+                case LengthUnits.kilometers:
+                    return UnitLength.kilometers
+                case LengthUnits.megameters:
+                    return UnitLength.megameters
+                case LengthUnits.meters:
+                    return UnitLength.meters
+                case LengthUnits.micrometers:
+                    return UnitLength.micrometers
+                case LengthUnits.miles:
+                    return UnitLength.miles
+                case LengthUnits.millimeters:
+                    return UnitLength.miles
+                case LengthUnits.nanometers:
+                    return UnitLength.nanometers
+                case LengthUnits.picometers:
+                    return UnitLength.picometers
+                case LengthUnits.yards:
+                    return UnitLength.yards
+                default:
+                    throw new Error(`Symbol is not found. ${symbol}`)
+            }
+        } catch (error) {
+            throw new Error(`UnitLength ~ ${error}`)
+        }
+    }
 }
