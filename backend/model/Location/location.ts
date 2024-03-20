@@ -1,29 +1,29 @@
-import { Coordinate } from "../Units/coordinate"
+import { Converter } from "../Database/database"
+import { Coordinate, CoordinateConverter } from "../Units/coordinate"
 
-export class Location {
-    readonly name: string
-    readonly position: Coordinate
+export interface Location {
+    name: string
+    position: Coordinate
+}
 
-    constructor(name: string, position: Coordinate) {
-        this.name = name
-        this.position = position
-    }
+export class LocationConverter implements Converter<Location> {
+    private converter = new CoordinateConverter()
 
-    convertToSchema(): any {
+    convertToSchema(object: Location) {
         return {
-            name: this.name,
-            position: this.position.convertToSchema()
+            name: object.name,
+            position: this.converter.convertToSchema(object.position)
         }
     }
 
-    static convertFromSchema(schema: any): Location {
+    convertFromSchema(schema: any): Location {
         try {
-            return new Location(
-                String(schema.name),
-                Coordinate.convertFromSchema(schema.position)
-            )
+            return {
+                name: String(schema.name),
+                position: this.converter.convertFromSchema(schema.position)
+            }
         } catch(error: any) {
             throw new Error(`Location ~ ${error.message}`)
-        }
+        }   
     }
 }

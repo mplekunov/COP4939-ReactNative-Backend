@@ -1,29 +1,46 @@
 
+import { Converter } from "../Database/database"
 import { Person } from "../Person/person"
 
-export class Login {
+export interface Login {
     username: string
     password: string
-
-    constructor(username: string, password: string) {
-        this.username = username
-        this.password = password
-    }
 }
 
-export class User extends Person {
+export interface User extends Person {
     username: string
     password: string
-
-    constructor(person: Person, username: string, password: string) {
-        super(person.firstName, person.lastName, person.dateOfBirth, person.sex)
-
-        this.username = username
-        this.password = password
-    }
 }
 
 export enum Sex {
     MALE,
     FEMALE
+}
+
+export class UserConverter implements Converter<User> {
+    convertToSchema(object: Partial<User>) {
+        return {
+            username: object.username,
+            password: object.password,
+            firstName: object.firstName,
+            lastName: object.lastName,
+            dateOfBirth: object.dateOfBirth,
+            sex: object.sex
+        }
+    }
+    
+    convertFromSchema(schema: any): User {
+        try {
+            return {
+                username: schema.username,
+                password: schema.password,
+                firstName: schema.firstName,
+                lastName: schema.lastName,
+                dateOfBirth: new Date(schema.dateOfBirth),
+                sex:schema.sex as Sex
+            }
+        } catch(error : any) {
+            throw new Error(`Skier ~ ${error.message}`)
+        }
+    }
 }

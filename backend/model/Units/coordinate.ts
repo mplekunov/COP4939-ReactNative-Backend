@@ -1,28 +1,26 @@
+import { Converter } from "../Database/database"
 import { Measurement } from "./unit"
 import { UnitAngle } from "./unitAngle"
 
-export class Coordinate {
+export interface Coordinate {
     latitude: Measurement<UnitAngle>
     longitude: Measurement<UnitAngle>
+}
 
-    constructor(latitude: Measurement<UnitAngle>, longitude: Measurement<UnitAngle>) {
-        this.latitude = latitude
-        this.longitude = longitude
-    }
-
-    convertToSchema() : any {
+export class CoordinateConverter implements Converter<Coordinate> {
+    convertToSchema(coordinate: Coordinate) : any {
         return {
-            latitude: this.latitude.convertToSchema(),
-            longitude: this.longitude.convertToSchema()
+            latitude: coordinate.latitude.convertToSchema(),
+            longitude: coordinate.longitude.convertToSchema()
         }
     }
 
-    static convertFromSchema(schema: any) : Coordinate {
+    convertFromSchema(schema: any) : Coordinate {
         try {
-            return new Coordinate(
-                new Measurement(parseFloat(schema.latitude.value), UnitAngle.parse(schema.latitude.unit)),
-                new Measurement(parseFloat(schema.longitude.value), UnitAngle.parse(schema.longitude.unit))
-            )
+            return {
+                latitude: new Measurement(parseFloat(schema.latitude.value), UnitAngle.parse(schema.latitude.unit)),
+                longitude: new Measurement(parseFloat(schema.longitude.value), UnitAngle.parse(schema.longitude.unit))
+            }
         } catch(error : any) {
             throw new Error(`Coordinate ~ ${error.message}`)
         }

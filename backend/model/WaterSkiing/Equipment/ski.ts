@@ -1,32 +1,28 @@
 import { Measurement } from "../../Units/unit";
 import { UnitLength } from "../../Units/unitLength";
 
-export class Ski {
-    readonly brand: string
-    readonly style: string
-    readonly length: Measurement<UnitLength>
-    
-    constructor(brand: string, style: string, length: Measurement<UnitLength>) {
-        this.brand = brand
-        this.style = style
-        this.length = length
-    }
+export interface Ski {
+    brand: string
+    style: string
+    length: Measurement<UnitLength>
+}
 
-    convertToSchema(): any {
+export class SkiConverter {
+    static convertToSchema(ski: Ski): any {
         return {
-            brand: this.brand,
-            style: this.style,
-            length: this.length.convertToSchema(),
+            brand: ski.brand,
+            style: ski.style,
+            length: ski.length.convertToSchema(),
         }
     }
 
     static convertFromSchema(schema: any): Ski {
         try {
-            return new Ski(
-                String(schema.brand),
-                String(schema.style),
-                new Measurement(parseFloat(schema.length.value), UnitLength.parse(schema.length.unit)),
-            )
+            return {
+                brand: String(schema.brand),
+                style: String(schema.style),
+                length: new Measurement(parseFloat(schema.length.value), UnitLength.parse(schema.length.unit)),
+            }
         } catch(error : any) {
             throw new Error(`Ski ~ ${error.message}`)
         }

@@ -1,35 +1,37 @@
-export class Video {
-    readonly id: string
-    readonly creationDate: Date
-    readonly fileLocation: string
-    readonly durationInMilliseconds: number
 
-    constructor(id: string, creationDate: Date, fileLocation: string, durationInMilliseconds: number) {
-        this.id = id
-        this.creationDate = creationDate
-        this.fileLocation = fileLocation
-        this.durationInMilliseconds = durationInMilliseconds
-    }
+import { Converter } from "../Database/database"
+import { Extension } from "../File/file"
 
-    convertToSchema(): any {
+export interface Video {
+    id: string
+    creationDate: Date
+    url: string
+    durationInMilliseconds: number
+    extension: Extension
+}
+
+export class VideoConverter implements Converter<Video> {
+    convertToSchema(object: Video) {
         return {
-            id: this.id,
-            creationDate: this.creationDate,
-            fileLocation: this.fileLocation,
-            durationInMilliseconds: this.durationInMilliseconds
+            id: object.id,
+            creationDate: object.creationDate,
+            url: object.url,
+            durationInMilliseconds: object.durationInMilliseconds,
+            extension: object.extension
         }
     }
-
-    static convertFromSchema(schema: any) : Video {
+    convertFromSchema(schema: any): Video {
         try {
-            return new Video(
-                schema.id,
-                new Date(schema.creationDate),
-                String(schema.fileLocation),
-                parseInt(schema.durationInMilliseconds)
-            )
+            return {
+                id: schema.id,
+                creationDate: new Date(schema.creationDate),
+                url: String(schema.url),
+                durationInMilliseconds: parseInt(schema.durationInMilliseconds),
+                extension: schema.extension as Extension
+            }
         } catch(error: any) {
             throw new Error(`Video ~ ${error.message}`)
         }
     }
+
 }

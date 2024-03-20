@@ -10,26 +10,25 @@ import { UnitAcceleration } from "../../Units/unitAcceleration";
 import { UnitAngle } from "../../Units/unitAngle";
 import { UnitLength } from "../../Units/unitLength";
 import { UnitSpeed } from "../../Units/unitSpeed";
-import { Buoy } from "../Course/buoy";
-import { Gate } from "../Course/gate";
-import { WakeCross } from "../Course/wakeCross";
 import { WaterSkiingCourse } from "../Course/waterSkiingCourse";
-import { Pass, PassBuilder } from "../Course/pass";
+import { Pass } from "./pass";
 
 export class WaterSkiingPassProcessor {
-    private readonly logger: LoggerService = new LoggerService("WaterSkiingPassProcessorForCoordinates")
-    private readonly videoManager: VideoManager = new VideoManager()
+    private readonly logger = new LoggerService("WaterSkiingPassProcessor")
+    private readonly videoManager = new VideoManager()
 
     private readonly NUM_OF_BUOYS = 6
+    private readonly NUM_OF_WAKE_CROSSES = 5
 
-    private readonly RANGE: Measurement<UnitLength> = new Measurement<UnitLength>(1.0, UnitLength.meters)
+    private readonly RANGE = new Measurement<UnitLength>(1.0, UnitLength.meters)
     
     public async process(course: WaterSkiingCourse<Coordinate>, session: TrackingSession) : Promise<Pass> {
         return new Promise(async (resolve, reject) => {
             let records = session.trackingRecords
             let video = session.video
             
-            let passBuilder = new PassBuilder()
+            var pass: Partial<Pass> = {}
+
             let videoCreationDate = video.creationDate
     
             if (records.length == 0) {
@@ -51,7 +50,7 @@ export class WaterSkiingPassProcessor {
             let wakeCrossIndex = 0
             let buoyIndex = 0
     
-            passBuilder.setScore(this.calculateTotalScore(course, records))
+            pass.score = this.calculateTotalScore(course, records)
     
             let crossedEntryGate: Boolean = false
     
@@ -75,65 +74,61 @@ export class WaterSkiingPassProcessor {
                 }
     
                 if (this.inRange(record.location.coordinate, course.entryGatePosition, this.RANGE)) {
-                    passBuilder.setEntryGate(
-                        new Gate(
-                            course.entryGatePosition,
-                            record.motion.speed,
-                            record.motion.roll,
-                            record.motion.pitch,
-                            record.date
-                        )
-                    )
+                    pass.entryGate = {
+                        position: course.entryGatePosition,
+                        maxSpeed: record.motion.speed,
+                        maxRoll: record.motion.roll,
+                        maxPitch: record.motion.pitch,
+                        date: record.date
+                    }
     
                     crossedEntryGate = true
                 }
     
                 if (this.inRange(record.location.coordinate, course.exitGatePosition, this.RANGE)) {
-                    passBuilder.setExitGate(
-                        new Gate(
-                            course.exitGatePosition,
-                            maxSpeed,
-                            maxRoll,
-                            maxPitch,
-                            record.date
-                        )
-                    )
-                }
-    
-                if (wakeCrossIndex < course.wakeCrossPositions.length && this.inRange(record.location.coordinate, course.wakeCrossPositions[wakeCrossIndex], this.RANGE)) {
-                    passBuilder.addWakeCross(
-                        new WakeCross(
-                            course.wakeCrossPositions[wakeCrossIndex],
-                            maxSpeed,
-                            maxRoll,
-                            maxPitch,
-                            maxCourse,
-                            maxGForce,
-                            maxAcceleration,
-                            record.date
-                        )
-                    )
-
-                    wakeCrossIndex++
+                    pass.exitGate = {
+                        position: course.exitGatePosition,
+                        maxSpeed: maxSpeed,
+                        maxRoll: maxRoll,
+                        maxPitch: maxPitch,
+                        date: record.date
+                    }
                 }
     
                 if (buoyIndex < course.buoyPositions.length && this.inRange(record.location.coordinate, course.buoyPositions[buoyIndex], this.RANGE)) {
-                    passBuilder.addBuoy(
-                        new Buoy(
-                            course.buoyPositions[buoyIndex],
-                            maxSpeed,
-                            maxRoll,
-                            maxPitch,
-                            record.date
-                        )
+                    pass.buoys?.push(
+                        {
+                            position: course.buoyPositions[buoyIndex],
+                            maxSpeed: maxSpeed,
+                            maxRoll: maxRoll,
+                            maxPitch: maxPitch,
+                            date: record.date
+                        }
                     )
     
                     buoyIndex++ 
                 }
+
+                if (wakeCrossIndex < course.wakeCrossPositions.length && this.inRange(record.location.coordinate, course.wakeCrossPositions[wakeCrossIndex], this.RANGE)) {
+                    pass.wakeCrosses?.push(
+                        {
+                            position: course.wakeCrossPositions[wakeCrossIndex],
+                            maxSpeed: maxSpeed,
+                            maxRoll: maxRoll,
+                            maxPitch: maxPitch,
+                            maxAngle: maxCourse,
+                            maxGForce: maxGForce,
+                            maxAcceleration: maxAcceleration,
+                            date: record.date
+                        }
+                    )
+
+                    wakeCrossIndex++
+                }
             })
 
-            let exitGate = passBuilder.getExitGate()
-            let entryGate = passBuilder.getEntryGate()
+            let exitGate = pass.exitGate
+            let entryGate = pass.entryGate
     
             if (entryGate === undefined || exitGate === undefined) {
                 return reject("Entry/Exit gates undefined.")
@@ -146,10 +141,9 @@ export class WaterSkiingPassProcessor {
                     video
                 )
 
-                passBuilder.setVideo(trimmedVideo)
-                let pass = passBuilder.build()
+                pass.video =trimmedVideo
 
-                if (pass?.buoys.length !== this.NUM_OF_BUOYS || pass.wakeCrosses.length !== this.NUM_OF_BUOYS) {
+                if (pass?.buoys?.length !== this.NUM_OF_BUOYS || pass?.wakeCrosses?.length !== this.NUM_OF_WAKE_CROSSES) {
                     return reject("Number of buoys or wake crosses is incorrect in the calculated pass.")
                 }
     
@@ -157,7 +151,14 @@ export class WaterSkiingPassProcessor {
                     return reject("Pass is undefined.")   
                 }
 
-                return resolve(pass)
+                return resolve({
+                    buoys: pass.buoys!,
+                    entryGate: pass.entryGate!,
+                    exitGate: pass.exitGate!,
+                    score: pass.score!,
+                    video: pass.video!,
+                    wakeCrosses: pass.wakeCrosses!
+                })
             } catch (error) {
                 this.logger.error(`${error}`)
                 return reject(error)
@@ -178,16 +179,22 @@ export class WaterSkiingPassProcessor {
             let start = Math.abs(creationDate - startTime)
             let end = Math.abs(creationDate - endTime)
     
-            let movieOutputURL = documentsDirectory + "/" + video.id + "." + video.fileLocation.split(".").pop()
+            let movieOutputURL = documentsDirectory + "/" + video.id + "." + video.url.split(".").pop()
     
             try {
-                let result = await this.videoManager.trimVideo(video.fileLocation, movieOutputURL, start, end)
+                let result = await this.videoManager.trimVideo(video.url, movieOutputURL, start, end)
                 
                 if (!result) {
                     return reject("Couldn't trim video.")
                 }
 
-                return resolve(new Video(video.id, video.creationDate, movieOutputURL, end - start))
+                return resolve({
+                    id: video.id, 
+                    creationDate: video.creationDate, 
+                    url: movieOutputURL, 
+                    durationInMilliseconds: end - start, 
+                    extension: video.extension
+                })
             } catch (error) {
                 this.logger.error(`${error}`)
                 return reject(error)

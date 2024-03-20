@@ -1,66 +1,50 @@
-import { ServerCode, ServerResponse } from "../Network/server"
-import { User } from "../User/user"
+import { ServerResponse } from "../Network/server"
+import { User, UserConverter } from "../User/user"
+import { MongoDBHelper } from "./database"
 
-export class UserDatabase {
-    private app: Realm.App
+export class UserDatabase extends MongoDBHelper {
+    private static CREATE_FUNCTION = "createUser"
+    private static READ_FUNCTION = "readUser"
+    private static UPDATE_FUNCTION = "updateUser"
+    private static DELETE_FUNCTION = "deleteUser"
+
+    private static converter = new UserConverter()
 
     constructor(app: Realm.App) {
-        this.app = app
+        super(app)
     }
 
-    public create(user: User): Promise<ServerResponse<User, string>> {
-        return new Promise(async (resolve, reject) => {
-            try {
-                let response = await this.app.currentUser?.callFunction('createUser', user) as ServerResponse<User, string>
-                return resolve(response)
-            } catch(error: any) {
-                return reject({
-                    status: ServerCode.BadRequest,
-                    error: error?.message ?? error
-                })
-            }
-        })
+    public async create(user: User): Promise<ServerResponse<User, string>> {
+        return await this.makeRequest(
+            UserDatabase.CREATE_FUNCTION, 
+            [user],
+            UserDatabase.converter,
+            UserDatabase.converter
+        )
     }
 
-    public read(username: string): Promise<ServerResponse<User, string>> {
-        return new Promise(async (resolve, reject) => {
-            try {
-                let response = await this.app.currentUser?.callFunction('getUser', username) as ServerResponse<User, string>
-                return resolve(response)
-            } catch(error: any) {
-                return reject({
-                    status: ServerCode.BadRequest,
-                    error: error?.message ?? error
-                })
-            }
-        })
+    public async read(username: string): Promise<ServerResponse<User, string>> {
+        return await this.makeRequest(
+            UserDatabase.READ_FUNCTION, 
+            [username],
+            UserDatabase.converter,
+            UserDatabase.converter
+        )
     }
 
-    public update(id: string, object: User): Promise<ServerResponse<User, string>> {
-        return new Promise(async (resolve, reject) => {
-            try {
-                let response = await this.app.currentUser?.callFunction('updateUser', id, object) as ServerResponse<User, string>
-                return resolve(response)
-            } catch(error: any) {
-                return reject({
-                    status: ServerCode.BadRequest,
-                    error: error?.message ?? error
-                })
-            }
-        })
+    public async update(username: string, object: Partial<User>): Promise<ServerResponse<User, string>> {
+        return await this.makeRequest(
+            UserDatabase.UPDATE_FUNCTION, 
+            [username, object],
+            UserDatabase.converter,
+            UserDatabase.converter
+        )
     }
 
-    public delete(username: string): Promise<ServerResponse<User, string>> {
-        return new Promise(async (resolve, reject) => {
-            try {
-                let response = await this.app.currentUser?.callFunction('deleteUser', username) as ServerResponse<User, string>
-                return resolve(response)
-            } catch(error: any) {
-                return reject({
-                    status: ServerCode.BadRequest,
-                    error: error?.message ?? error
-                })
-            }
-        })
+    public async delete(username: string): Promise<ServerResponse<null, string>> {
+        return await this.makeRequest(
+            UserDatabase.DELETE_FUNCTION, 
+            [username]
+        )
     }
 }

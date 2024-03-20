@@ -1,28 +1,25 @@
-import { Fin } from "./fin";
-import { Ski } from "./ski";
+import { Fin, FinConverter } from "./fin";
+import { Ski, SkiConverter } from "./ski";
 
-export class WaterSkiingEquipment {
-    readonly fin: Fin
-    readonly ski: Ski
+export interface WaterSkiingEquipment {
+    fin: Fin
+    ski: Ski
+}
 
-    constructor(fin: Fin, ski: Ski) {
-        this.fin = fin
-        this.ski = ski
-    }
-
-    convertToSchema(): any {
+export class WaterSkiingEquipmentConverter {
+    static convertToSchema(waterSkiingEquipment: WaterSkiingEquipment): any {
         return {
-            fin: this.fin.convertToSchema(),
-            ski: this.ski.convertToSchema()
+            fin: FinConverter.convertToSchema(waterSkiingEquipment.fin),
+            ski: SkiConverter.convertToSchema(waterSkiingEquipment.ski)
         }
     }
 
     static convertFromSchema(schema: any): WaterSkiingEquipment {
         try {
-            return new WaterSkiingEquipment(
-                Fin.convertFromSchema(schema.fin),
-                Ski.convertFromSchema(schema.ski)
-            )
+            return {
+                fin: FinConverter.convertFromSchema(schema.fin),
+                ski: SkiConverter.convertFromSchema(schema.ski)
+            }
         } catch(error : any) {
             throw new Error(`WaterSkiingEquipment ~ ${error.message}`)
         }

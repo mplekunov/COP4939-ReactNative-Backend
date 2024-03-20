@@ -15,24 +15,4 @@ export class TrackingRecord {
         this.motion = motion
         this.date = date
     }
-
-    convertToSchema() : any {
-        return {
-            location: this.location.convertToSchema(),
-            motion: this.motion.convertToSchema(),
-            date: this.date
-        }
-    }
-
-    static convertFromSchema(schema: any): TrackingRecord {
-        try {
-            return new TrackingRecord(
-                MotionRecord.convertFromSchema(schema.motion),
-                LocationRecord.convertFromSchema(schema.location),
-                new Date(schema.date)
-            )
-        } catch(error : any) {
-            throw new Error(`TrackingRecord ~ ${error.message}`)
-        }
-    }
 }

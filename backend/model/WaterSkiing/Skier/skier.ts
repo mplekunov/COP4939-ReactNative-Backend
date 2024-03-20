@@ -1,47 +1,33 @@
-import { Person } from "../../Person/person"
+import { Converter } from "../../Database/database"
 import { Sex, User } from "../../User/user"
-import { WaterSkiingEquipment } from "../Equipment/waterSkiingEquipment"
-import { WaterSkiingSession } from "../waterSkiingSession"
+import { WaterSkiingEquipment, WaterSkiingEquipmentConverter } from "../Equipment/waterSkiingEquipment"
 import { WaterSkiingAgeGroup } from "./waterSkiingAgeGroup"
 
-export class Skier extends User {
+export interface Skier extends User {
     equipment: WaterSkiingEquipment
     ageGroup: WaterSkiingAgeGroup
+}
 
-    constructor(
-        user: User, 
-        equipment: WaterSkiingEquipment, 
-        ageGroup: WaterSkiingAgeGroup
-    ) {
-        super(new Person(user.firstName, user.lastName, user.dateOfBirth, user.sex), user.username, user.password)
-
-        this.equipment = equipment
-        this.ageGroup = ageGroup
-    }
-
-    convertToSchema(): any {
+export class SkierConverter implements Converter<Skier> {
+    convertToSchema(object: Skier) {
         return {
-            equipment: this.equipment.convertToSchema(),
-            ageGroup: this.ageGroup,
+            equipment: WaterSkiingEquipmentConverter.convertToSchema(object.equipment),
+            ageGroup: object.ageGroup,
         }
     }
-
-    static convertFromSchema(schema: any): Skier {
+    
+    convertFromSchema(schema: any): Skier {
         try {
-            return new Skier(
-                new User(
-                    new Person(
-                        String(schema.firstName),
-                        String(schema.lastName),
-                        new Date(schema.dateOfBirth),
-                        schema.sex as Sex
-                    ),
-                    String(schema.username),
-                    String(schema.password),
-                ),
-                WaterSkiingEquipment.convertFromSchema(schema.equipment),
-                schema.ageGroup as WaterSkiingAgeGroup
-            )
+            return {
+                firstName: String(schema.firstName),
+                lastName: String(schema.lastName),
+                dateOfBirth: new Date(schema.dateOfBirth),
+                sex: schema.sex as Sex,
+                username: String(schema.username),
+                password: String(schema.password),
+                equipment: WaterSkiingEquipmentConverter.convertFromSchema(schema.equipment),
+                ageGroup: schema.ageGroup as WaterSkiingAgeGroup
+            }
         } catch(error : any) {
             throw new Error(`Skier ~ ${error.message}`)
         }

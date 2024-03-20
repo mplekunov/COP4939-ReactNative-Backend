@@ -4,8 +4,9 @@ import { Login, User } from "../User/user"
 import { ServerCode, ServerResponse } from "../Network/server"
 
 export class Authentication {
-    private readonly APP_SERVICE_APP_ID = "reactnativeapp-utclw"
-    private readonly APP_SERVICE_BASE_URL = `https://us-east-1.aws.data.mongodb-api.com/app/${this.APP_SERVICE_APP_ID}/endpoint/`
+    private static SIGNUP_FUNCTION = "signup"
+    private static readonly APP_SERVICE_APP_ID = process.env.MONGODB_APP_SERVICE_APP_ID as string
+    private static readonly APP_SERVICE_BASE_URL = `${process.env.MONGODB_APP_SERVICE_BASE_URL}/app/${this.APP_SERVICE_APP_ID}/endpoint/`
 
     private static instance: Authentication
 
@@ -20,7 +21,7 @@ export class Authentication {
     }
 
     private constructor() {
-        this.app = new Realm.App(this.APP_SERVICE_APP_ID)
+        this.app = new Realm.App(Authentication.APP_SERVICE_APP_ID)
     }
 
     public logIn(login: Login): Promise<ServerResponse<Login, string>> {
@@ -66,7 +67,7 @@ export class Authentication {
             }
         
             try {
-                let response = (await axios.post(this.APP_SERVICE_BASE_URL + "signup", user)).data as ServerResponse<User, string>
+                let response = (await axios.post(Authentication.APP_SERVICE_BASE_URL + Authentication.SIGNUP_FUNCTION, user)).data as ServerResponse<User, string>
                 return resolve(response)
             } catch(error: any) {
                 if (error.response?.data?.status !== undefined) {

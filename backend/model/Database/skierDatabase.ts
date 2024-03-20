@@ -1,85 +1,50 @@
-import { ServerCode, ServerResponse } from "../Network/server"
-import { TrackingSession } from "../Tracking/trackingSession"
-import { Skier } from "../WaterSkiing/Skier/skier"
-import { WaterSkiingSession } from "../WaterSkiing/waterSkiingSession"
-import { UserDatabase } from "./userDatabase"
-import { WaterSkiingSessionDatabase } from "./waterSkiingSessionDatabase"
+import { ServerResponse } from "../Network/server"
+import { Skier, SkierConverter } from "../WaterSkiing/Skier/skier"
+import { MongoDBHelper } from "./database"
 
-export class SkierDatabase {
-    private app: Realm.App
+export class SkierDatabase extends MongoDBHelper {
+    private static CREATE_FUNCTION = "createSkier"
+    private static READ_FUNCTION = "readSkier"
+    private static UPDATE_FUNCTION = "updateSkier"
+    private static DELETE_FUNCTION = "deleteSkier"
+
+    private static converter = new SkierConverter()
 
     constructor(app: Realm.App) {
-        this.app = app
+        super(app)
     }
     
-    public create(object: Skier): Promise<ServerResponse<Skier, string>> {
-        return new Promise(async (resolve, reject) => {
-            try {
-                let response = await this.app.currentUser?.callFunction('createSkier', object.convertToSchema()) as any
-                
-                if (response.data !== undefined) {
-                    response.data = Skier.convertFromSchema(response.data)
-                }
-
-                return resolve(response as ServerResponse<Skier, string>)
-            } catch(error: any) {
-                return reject({
-                    status: ServerCode.BadRequest,
-                    error: error?.message ?? error
-                })
-            }
-        })
+    public async create(object: Skier): Promise<ServerResponse<Skier, string>> {
+        return await this.makeRequest(
+            SkierDatabase.CREATE_FUNCTION, 
+            [object],
+            SkierDatabase.converter,
+            SkierDatabase.converter
+        )
     }
 
-    public read(id: string): Promise<ServerResponse<Skier, string>> {
-        return new Promise(async (resolve, reject) => {
-            try {
-                let response = await this.app.currentUser?.callFunction('readSkier', id) as any
-
-                if (response.data !== undefined) {
-                    response.data = Skier.convertFromSchema(response.data)
-                }
-
-                return resolve(response as ServerResponse<Skier, string>)
-            } catch(error: any) {
-                return reject({
-                    status: ServerCode.BadRequest,
-                    error: error?.message ?? error
-                })
-            }
-        })
+    public async read(id: string): Promise<ServerResponse<Skier, string>> {
+        return await this.makeRequest(
+            SkierDatabase.READ_FUNCTION, 
+            [id],
+            SkierDatabase.converter,
+            SkierDatabase.converter
+        )
     }
 
-    public update(id: string, object: Skier): Promise<ServerResponse<Skier, string>> {
-        return new Promise(async (resolve, reject) => {
-            try {
-                let response = await this.app.currentUser?.callFunction('updateSkier', id, object.convertToSchema()) as any
-
-                if (response.data !== undefined) {
-                    response.data = Skier.convertFromSchema(response.data)
-                }
-
-                return resolve(response as ServerResponse<Skier, string>)
-            } catch(error: any) {
-                return reject({
-                    status: ServerCode.BadRequest,
-                    error: error?.message ?? error
-                })
-            }
-        })
+    public async update(id: string, object: Partial<Skier>): Promise<ServerResponse<Skier, string>> {
+        return await this.makeRequest(
+            SkierDatabase.UPDATE_FUNCTION, 
+            [id, object],
+            SkierDatabase.converter,
+            SkierDatabase.converter
+        )
     }
 
-    public delete(id: string): Promise<ServerResponse<Skier, string>> {
-        return new Promise(async (resolve, reject) => {
-            try {
-                let response = await this.app.currentUser?.callFunction('deleteSkier', id) as ServerResponse<Skier, string>
-                return resolve(response)
-            } catch(error: any) {
-                return reject({
-                    status: ServerCode.BadRequest,
-                    error: error?.message ?? error
-                })
-            }
-        })
+    public async delete(id: string): Promise<ServerResponse<null, string>> {
+        return await this.makeRequest(
+            SkierDatabase.DELETE_FUNCTION, 
+            [id]
+        )
     }
 }

@@ -13,26 +13,4 @@ export class TrackingSession {
         this.date = date
         this.video = video
     }
-
-    convertToSchema(): any {
-        return {
-            id: this.id,
-            date: this.date,
-            trackingRecords: this.trackingRecords.map(record => record.convertToSchema()),
-            video: this.video.convertToSchema()
-        }
-    }
-
-    static convertFromSchema(schema: any): TrackingSession {
-        try {
-            return new TrackingSession(
-                schema.id,
-                new Date(schema.recordDate),
-                (schema.trackingRecords as []).map(schema => TrackingRecord.convertFromSchema(schema)),
-                Video.convertFromSchema(schema.video)
-            )
-        } catch(error: any) {
-            throw new Error(`TrackingSession ~ ${error.message}`)
-        }
-    }
 }

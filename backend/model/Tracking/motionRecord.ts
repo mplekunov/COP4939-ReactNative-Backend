@@ -33,34 +33,4 @@ export class MotionRecord {
         this.heading = heading
         this.course = course
     }
-
-    convertToSchema(): any {
-        return {
-            speed: this.speed.convertToSchema(),
-            altitude: this.altitude.convertToSchema(),
-            pitch: this.pitch.convertToSchema(),
-            roll: this.roll.convertToSchema(),
-            heading: this.heading.convertToSchema(),
-            course: this.course.convertToSchema(),
-            acceleration: this.acceleration.convertToSchema(),
-            gForce: this.gForce.convertToSchema()
-        }
-    }
-
-    static convertFromSchema(schema: any): MotionRecord {
-        try {
-            return new MotionRecord(
-                new Measurement(parseFloat(schema.speed.value), UnitSpeed.parse(schema.speed.unit)),
-                new Measurement(parseFloat(schema.altitude.value), UnitLength.parse(schema.altitude.unit)),
-                new Measurement(parseFloat(schema.pitch.value), UnitAngle.parse(schema.pitch.unit)),
-                new Measurement(parseFloat(schema.roll.value), UnitAngle.parse(schema.roll.unit)),
-                new Measurement(parseFloat(schema.heading.value), UnitAngle.parse(schema.heading.unit)),
-                new Measurement(parseFloat(schema.course.value), UnitAngle.parse(schema.course.unit)),
-                new Measurement(parseFloat(schema.acceleration.value), UnitAcceleration.parse(schema.acceleration.unit)),
-                new Measurement(parseFloat(schema.gForce.value), UnitAcceleration.parse(schema.gForce.unit))
-            )
-        } catch(error : any) {
-            throw new Error(`MotionRecord ~ ${error.message}`)
-        }
-    }
 }

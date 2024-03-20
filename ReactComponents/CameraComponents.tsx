@@ -1,5 +1,6 @@
 import { Camera } from "react-native-vision-camera"
 import { Video } from "../Backend/Model/Camera/video"
+import { Extension } from "../Backend/Model/File/file"
 
 export async function getPermissions(onError: (error: any) => void) {
     try {
@@ -23,7 +24,7 @@ export async function getPermissions(onError: (error: any) => void) {
     }
 }
 
-export function startVideoRecording(camera: Camera, sessionID: string, onRecordFinish: (video: Video<string>) => void, onError: (error: any) => void) {
+export function startVideoRecording(camera: Camera, sessionID: string, onRecordFinish: (video: Video) => void, onError: (error: any) => void) {
     try {
         const creationDate = new Date();
 
@@ -33,7 +34,8 @@ export function startVideoRecording(camera: Camera, sessionID: string, onRecordF
                     sessionID, 
                     creationDate, 
                     video.path, 
-                    video.duration * 1000
+                    video.duration * 1000,
+                    Extension.MP4
                 )
             ),
             onRecordingError: (error) => onError(error),

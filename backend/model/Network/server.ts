@@ -7,7 +7,6 @@ export enum ServerCode {
     NotFound = 404
 }
 
-
 export interface ServerResponse<DataType, ErrorType> {
     status: ServerCode
     data?: DataType

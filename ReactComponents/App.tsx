@@ -6,7 +6,6 @@
  */
 
 import React, { useRef } from 'react';
-import type {PropsWithChildren} from 'react';
 import {
   StyleSheet,
   TouchableOpacity,
@@ -20,8 +19,7 @@ import { LoggerService } from '../Backend/Logger/loggerService';
 import { UserDatabase } from '../Backend/Model/Database/userDatabase';
 import { WaterSkiingSessionDatabase } from '../Backend/Model/Database/waterSkiingSessionDatabase';
 import { TrackingSession } from '../Backend/Model/Tracking/trackingSession';
-import { BSON } from 'bson';
-import 'react-native-get-random-values';
+import { BSON, ObjectId } from 'bson';
 import { TrackingRecord } from '../Backend/Model/Tracking/trackingRecord';
 import { MotionRecord } from '../Backend/Model/Tracking/motionRecord';
 import { Measurement } from '../Backend/Model/Units/unit';
@@ -35,7 +33,7 @@ import { Video } from '../Backend/Model/Camera/video';
 import { WaterSkiingSession } from '../Backend/Model/WaterSkiing/waterSkiingSession';
 import { ActivitySession } from '../Backend/Model/Session/activitySession';
 import { Location } from '../Backend/Model/Location/location';
-import { Pass } from '../Backend/Model/WaterSkiing/Course/pass';
+import { Pass, ProcessablePass } from '../Backend/Model/WaterSkiing/Processing/pass';
 import { Gate } from '../Backend/Model/WaterSkiing/Course/gate';
 import { Boat } from '../Backend/Model/WaterSkiing/Boat/boat';
 import { Driver } from '../Backend/Model/WaterSkiing/Boat/driver';
@@ -47,178 +45,444 @@ import { WaterSkiingEquipment } from '../Backend/Model/WaterSkiing/Equipment/wat
 import { Fin } from '../Backend/Model/WaterSkiing/Equipment/fin';
 import { Ski } from '../Backend/Model/WaterSkiing/Equipment/ski';
 import { WaterSkiingAgeGroup } from '../Backend/Model/WaterSkiing/Skier/waterSkiingAgeGroup';
+import { CloudStorage } from '../Backend/Model/Cloud/cloudStorage';
+import { ContentType, Extension, File } from '../Backend/Model/File/file';
+import { WaterSkiingPassDatabase } from '../Backend/Model/Database/waterSkiingPassDatabase';
+import { ProcessableWaterSkiingCourse, ProcessingStatus } from '../Backend/Model/WaterSkiing/Course/waterSkiingCourse';
+import { WaterSkiingCourseDatabase } from '../Backend/Model/Database/waterSkiingCourseDatabase';
 
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
+/**
+ * To Record Session:
+ * 1. WaterSkiing Course setup
+ * 2. WaterSkiing Recording Device
+ * 3. Camera Feed
+ * 
+ * 1. Setup course map
+ * 2. Start tracking recording
+ * 3. Start Recording video
+ * 4. Stop tracking recording
+ * 5. Stop Recording video
+ * 6. Process tracking info
+ * 7. Parse tracking info (At this point we have Course + Tracking info + Raw Video)
+ * 8. Use Course + Tracking info + Raw video in Algorithm for Pass processing
+ * 9. Save WaterSkiingSession
+ *  9.a. Save WaterSkiingSession to the MongoDB
+ * 10. Save Pass
+ *  10.a. Save Video to the Cloud => HTTPS link to the video
+ *  10.b. Save Pass info + video metadata to the MongoDB
+ */
 
+/**
+ * User Database CRUD operations example
+ */
+async function userCRUD(database: UserDatabase, user: User, newUser: User) {
+  await database.create(user)
+    .then((response) => console.log("CREATE: " + JSON.stringify(response)))
+    .catch((response) => console.log("CREATE: " + JSON.stringify(response)))
+
+  await database.read(user.username)
+    .then((response) => console.log("READ: " + JSON.stringify(response)))
+    .catch((response) => console.log("READ: " +JSON.stringify(response)))
+
+  await database.update(user.username, newUser)
+    .then((response) => console.log("UPDATE: " + JSON.stringify(response)))
+    .catch((response) => console.log("UPDATE: " + JSON.stringify(response)))
+
+  await database.delete(newUser.username)
+    .then((response) => console.log("DELETE: " + JSON.stringify(response)))
+    .catch((response) => console.log("DELETE: " + JSON.stringify(response)))
+}
+
+/**
+ * Skier Database CRUD operations example
+ */
+async function skierCRUD(database: SkierDatabase, skier: Skier, newSkier: Skier) {
+  await database.create(skier)
+    .then((response) => console.log("CREATE: " + JSON.stringify(response)))
+    .catch((response) => console.log("CREATE: " + JSON.stringify(response)))
+
+  await database.read(skier.username)
+    .then((response) => console.log("READ: " + JSON.stringify(response)))
+    .catch((response) => console.log("READ: " +JSON.stringify(response)))
+
+  await database.update(skier.username, newSkier)
+    .then((response) => console.log("UPDATE: " + JSON.stringify(response)))
+    .catch((response) => console.log("UPDATE: " + JSON.stringify(response)))
+
+  await database.delete(skier.username)
+    .then((response) => console.log("DELETE: " + JSON.stringify(response)))
+    .catch((response) => console.log("DELETE: " + JSON.stringify(response)))
+}
+
+/**
+ * WaterSkiingSession Database CRUD operations example
+ */
+async function waterSkiingSessionCRUD(database: WaterSkiingSessionDatabase, user: User, session: WaterSkiingSession) {
+  await database.create(session)
+    .then((response) => console.log("CREATE: " + JSON.stringify(response)))
+    .catch((response) => console.log("CREATE: " + JSON.stringify(response)))
+
+  await database.read(session.id)
+    .then((response) => console.log("READ SPECIFIC: " + JSON.stringify(response)))
+    .catch((response) => console.log("READ SPECIFIC: " + JSON.stringify(response)))
+
+  await database.readAll(0, 100)
+    .then((response) => console.log("READ ALL: " + JSON.stringify(response.data?.length)))
+    .catch((response) => console.log("READ ALL: " + JSON.stringify(response)))
+
+  await database.readAll(0, 100, user.username)
+    .then((response) => console.log("READ ALL FOR USER: " + JSON.stringify(response.data?.length)))
+    .catch((response) => console.log("READ ALL FOR USER: " + JSON.stringify(response)))
+
+  await database.update(session.id, session)
+    .then((response) => console.log("UPDATE: " + JSON.stringify(response)))
+    .catch((response) => console.log("UPDATE: " + JSON.stringify(response)))
+
+  // await database.delete(session.id)
+  //   .then((response) => console.log("DELETE: " + JSON.stringify(response)))
+  //   .catch((response) => console.log("DELETE: " + JSON.stringify(response)))
+}
+
+/**
+ * WaterSkiingPass Database CRUD operations example
+ */
+async function waterSkiingPassCRUD(database: WaterSkiingPassDatabase, passes: ProcessablePass[], session: WaterSkiingSession) {
+  for (let pass of passes) {
+    await database.create(session.id, pass)
+      .then((response) => console.log("CREATE: " + JSON.stringify(response)))
+      .catch((response) => console.log("CREATE: " + JSON.stringify(response)))
+
+    await database.read(pass.id!)
+      .then((response) => console.log("READ SPECIFIC: " + JSON.stringify(response)))
+      .catch((response) => console.log("READ SPECIFIC: " + JSON.stringify(response)))
+  }
+
+  await database.readAll(session.id, 0, 100)
+    .then((response) => console.log("READ ALL: " + JSON.stringify(response.data?.length)))
+    .catch((response) => console.log("READ ALL: " + JSON.stringify(response)))
+
+  await database.update(passes[0].id!, passes[1])
+    .then((response) => console.log("UPDATE: " + JSON.stringify(response)))
+    .catch((response) => console.log("UPDATE: " + JSON.stringify(response)))
+
+  await database.delete(passes[0].id!)
+    .then((response) => console.log("DELETE: " + JSON.stringify(response)))
+    .catch((response) => console.log("DELETE: " + JSON.stringify(response)))
+}
+
+/**
+ * WaterSkiingCourse Database CRUD operations example
+ */
+async function waterSkiingCourseCRUD(database: WaterSkiingCourseDatabase, courses: ProcessableWaterSkiingCourse[]) {
+  for (let course of courses) {
+    await database.create(course)
+      .then((response) => console.log("CREATE: " + JSON.stringify(response)))
+      .catch((response) => console.log("CREATE: " + JSON.stringify(response)))
+
+    await database.read(course.id)
+      .then((response) => console.log("READ SPECIFIC: " + JSON.stringify(response)))
+      .catch((response) => console.log("READ SPECIFIC: " + JSON.stringify(response)))
+  }
+
+  await database.readAll(0, 100)
+    .then((response) => console.log("READ ALL: " + JSON.stringify(response.data?.length)))
+    .catch((response) => console.log("READ ALL: " + JSON.stringify(response)))
+
+  await database.update(courses[0].id, courses[1])
+    .then((response) => console.log("UPDATE: " + JSON.stringify(response)))
+    .catch((response) => console.log("UPDATE: " + JSON.stringify(response)))
+
+  await database.delete(courses[0].id)
+    .then((response) => console.log("DELETE: " + JSON.stringify(response)))
+    .catch((response) => console.log("DELETE: " + JSON.stringify(response)))
+}
+
+/**
+ * This is simply an example on how u can call Database/Cloud Storage interfaces
+ */
 function App(): React.JSX.Element {
-  const authentication = useRef(Authentication.getInstance())
-
   const logger = useRef(new LoggerService("SessionRecordingComponent"))
 
-  const register = async () => {
+  const example = async () => {
     let date = new Date()
     date.setMonth(6)
     date.setDate(5)
     date.setFullYear(1998)
 
-    let myUser = new User(new Person("Michael", "Plekunov", date, Sex.MALE), "mekromic", "password")
-    let newUser = new User(new Person("Michell", "Plekunova", date, Sex.FEMALE), "mekromic1", "password1")
+    let myUser: User = {
+      firstName: "Michael", 
+      lastName: "Plekunov", 
+      dateOfBirth: date, 
+      sex: Sex.MALE, 
+      username: "mekromic", 
+      password: "password"
+    }
 
-    let session = new WaterSkiingSession(
-      new ActivitySession(
-        new BSON.ObjectId().toString(),
-        new Location("Test Location", new Coordinate(new Measurement(1, UnitAngle.degrees), new Measurement(2, UnitAngle.degrees))),
-        new Date()
-      ),
-      [
-        new Pass(1, 
-          new Gate(
-            new Coordinate(new Measurement(1, UnitAngle.degrees), new Measurement(2, UnitAngle.degrees)),
-            new Measurement(1, UnitSpeed.metersPerSecond),
-            new Measurement(2, UnitAngle.degrees),
-            new Measurement(1, UnitAngle.degrees),
-            new Date()
-          ),
-          new Gate(
-            new Coordinate(new Measurement(1, UnitAngle.degrees), new Measurement(2, UnitAngle.degrees)),
-            new Measurement(1, UnitSpeed.metersPerSecond),
-            new Measurement(2, UnitAngle.degrees),
-            new Measurement(1, UnitAngle.degrees),
-            new Date()
-          ),
-          [
-            new WakeCross(
-              new Coordinate(new Measurement(1, UnitAngle.degrees), new Measurement(2, UnitAngle.degrees)),
-              new Measurement(1, UnitSpeed.metersPerSecond),
-              new Measurement(2, UnitAngle.degrees),
-              new Measurement(3, UnitAngle.arcMinutes),
-              new Measurement(4, UnitAngle.arcMinutes),
-              new Measurement(5, UnitAcceleration.metersPersecondSquared),
-              new Measurement(6, UnitAcceleration.metersPersecondSquared),
-              new Date()
-            )
+    let newUser: User = {
+      firstName: "Michell", 
+      lastName: "Plekunova", 
+      dateOfBirth: date, 
+      sex: Sex.FEMALE, 
+      username: "mekromic1", 
+      password: "password1"
+    }
+
+    let skier: Skier = {
+      ...myUser,
+      equipment: {
+        fin: { 
+          brand: "brand", 
+          style: "style", 
+          length: new Measurement(1, UnitLength.feet), 
+          bindingType: "bindingType"
+        },
+        ski: {
+          brand: "brand", 
+          style: "style", 
+          length: new Measurement(2, UnitLength.feet)
+        }
+      },
+      ageGroup: WaterSkiingAgeGroup.JR_MEN
+    }
+
+    let newSkier: Skier = {
+      ...skier
+    }
+
+    newSkier.username = "yeah"
+
+    let session = {
+      id: new BSON.ObjectId().toString(),
+      location: {
+        name: "Test Location", 
+        position: {
+          latitude: new Measurement(1, UnitAngle.degrees), 
+          longitude: new Measurement(2, UnitAngle.degrees)
+        },
+      },
+      date: new Date(),
+      boat: new Boat("The Lucky one", "LuckyID"),
+      driver: new Driver("Michael")
+    }
+
+    let passes: ProcessablePass[] = [
+      {
+        id: new ObjectId().toHexString(),
+        date: new Date(),
+        status: ProcessingStatus.Processing
+      },
+      {
+        id: new ObjectId().toString(), 
+        date: new Date(),
+        status: ProcessingStatus.Processed,
+        processedPass: {
+          score: 1, 
+          entryGate: {
+            position: {
+              longitude: new Measurement(1, UnitAngle.degrees), 
+              latitude: new Measurement(2, UnitAngle.degrees)
+            },
+            maxSpeed: new Measurement(1, UnitSpeed.metersPerSecond),
+            maxPitch: new Measurement(2, UnitAngle.degrees),
+            maxRoll: new Measurement(1, UnitAngle.degrees),
+            date: new Date()
+        },
+          exitGate: {
+            position: {
+              longitude: new Measurement(1, UnitAngle.degrees), 
+              latitude: new Measurement(2, UnitAngle.degrees)
+            },
+            maxSpeed: new Measurement(1, UnitSpeed.metersPerSecond),
+            maxPitch: new Measurement(2, UnitAngle.degrees),
+            maxRoll: new Measurement(1, UnitAngle.degrees),
+            date: new Date()
+          },
+          wakeCrosses: [
+            {
+              position: {
+                longitude: new Measurement(1, UnitAngle.degrees), 
+                latitude: new Measurement(2, UnitAngle.degrees),
+              },
+              maxSpeed: new Measurement(1, UnitSpeed.metersPerSecond),
+              maxAngle: new Measurement(2, UnitAngle.degrees),
+              maxPitch: new Measurement(3, UnitAngle.arcMinutes),
+              maxRoll: new Measurement(4, UnitAngle.arcMinutes),
+              maxAcceleration: new Measurement(5, UnitAcceleration.metersPersecondSquared),
+              maxGForce: new Measurement(6, UnitAcceleration.metersPersecondSquared),
+              date: new Date()
+            }
           ],
-          [
-            new Buoy(
-              new Coordinate(new Measurement(1, UnitAngle.degrees), new Measurement(2, UnitAngle.degrees)),
-              new Measurement(2, UnitSpeed.metersPerSecond),
-              new Measurement(3, UnitAngle.degrees),
-              new Measurement(5, UnitAngle.arcMinutes),
-              new Date()
-            )
+          buoys: [
+            {
+              position: {
+                longitude: new Measurement(1, UnitAngle.degrees), 
+                latitude: new Measurement(2, UnitAngle.degrees)
+              },
+              maxSpeed: new Measurement(2, UnitSpeed.metersPerSecond),
+              maxPitch: new Measurement(3, UnitAngle.degrees),
+              maxRoll: new Measurement(5, UnitAngle.arcMinutes),
+              date: new Date()
+            }
           ],
-          new Date(),
-          new Video(
-            "the video",
-            new Date(),
-            "www.example.com",
-            123
-          )
-        )
-      ],
-      new Boat("The Lucky one", "LuckyID"),
-      new Driver("Michael")
-    )
+          video: {
+            id: new ObjectId().toString(),
+            creationDate: new Date(),
+            url: "www.example.com",
+            durationInMilliseconds: 123,
+            extension: Extension.MP4
+          }
+        }
+      }
+    ]
+
+    let courses: ProcessableWaterSkiingCourse[] = [
+      {
+        id: new ObjectId().toString(),
+        name: "UniqueName #1",
+        status: ProcessingStatus.Processing,
+        preProcessedCourse: {
+          buoyPositions: [new Date(), new Date(), new Date(), new Date(), new Date(), new Date()],
+          wakeCrossPositions: [new Date(), new Date(), new Date(), new Date(), new Date()],
+          entryGatePosition: new Date(),
+          exitGatePosition: new Date()
+        }
+      },
+      {
+        id: new ObjectId().toString(),
+        name: "UniqueName #2",
+        status: ProcessingStatus.Processed,
+        preProcessedCourse: {
+          buoyPositions: [new Date(), new Date(), new Date(), new Date(), new Date(), new Date()],
+          wakeCrossPositions: [new Date(), new Date(), new Date(), new Date(), new Date()],
+          entryGatePosition: new Date(),
+          exitGatePosition: new Date()
+        },
+        processedCourse: {
+          buoyPositions: [
+            {
+              longitude: new Measurement(1, UnitAngle.degrees), 
+              latitude: new Measurement(2, UnitAngle.degrees)
+            },
+            {
+              longitude: new Measurement(1, UnitAngle.degrees), 
+              latitude: new Measurement(2, UnitAngle.degrees)
+            },
+            {
+              longitude: new Measurement(1, UnitAngle.degrees), 
+              latitude: new Measurement(2, UnitAngle.degrees)
+            },
+            {
+              longitude: new Measurement(1, UnitAngle.degrees), 
+              latitude: new Measurement(2, UnitAngle.degrees)
+            },
+            {
+              longitude: new Measurement(1, UnitAngle.degrees), 
+              latitude: new Measurement(2, UnitAngle.degrees)
+            },
+            {
+              longitude: new Measurement(1, UnitAngle.degrees), 
+              latitude: new Measurement(2, UnitAngle.degrees)
+            }
+          ],
+          wakeCrossPositions: [
+            {
+              longitude: new Measurement(1, UnitAngle.degrees), 
+              latitude: new Measurement(2, UnitAngle.degrees)
+            },
+            {
+              longitude: new Measurement(1, UnitAngle.degrees), 
+              latitude: new Measurement(2, UnitAngle.degrees)
+            },
+            {
+              longitude: new Measurement(1, UnitAngle.degrees), 
+              latitude: new Measurement(2, UnitAngle.degrees)
+            },
+            {
+              longitude: new Measurement(1, UnitAngle.degrees), 
+              latitude: new Measurement(2, UnitAngle.degrees)
+            },
+            {
+              longitude: new Measurement(1, UnitAngle.degrees), 
+              latitude: new Measurement(2, UnitAngle.degrees)
+            }
+          ],
+          entryGatePosition: {
+            longitude: new Measurement(1, UnitAngle.degrees), 
+            latitude: new Measurement(2, UnitAngle.degrees)
+          },
+          exitGatePosition: {
+            longitude: new Measurement(1, UnitAngle.degrees), 
+            latitude: new Measurement(2, UnitAngle.degrees)
+          }
+        }
+      }
+    ]
 
     let payload = {
         username: "mekromic",
         password: "password"
     }
 
-    await authentication.current.signUp(myUser)
+    let authentication = Authentication.getInstance()
+
+    await authentication.signUp(myUser)
       .then((response) => logger.current.log("SIGNUP: " + JSON.stringify(response)))
       .catch((error) => logger.current.error("SIGNUP: " + JSON.stringify(error)))
 
-    await authentication.current.logIn(payload)
+    await authentication.logIn(payload)
       .then((response) => logger.current.log("LOGIN: " + JSON.stringify(response)))
       .catch((error) => logger.current.error("LOGIN: " + JSON.stringify(error)))
 
-    let myDatabase = new UserDatabase(authentication.current.app)
+    // let userDatabase = new UserDatabase(authentication.current.app)
 
-    let waterSkiingSessionDatabase = new WaterSkiingSessionDatabase(authentication.current.app)
+    // console.log("User CRUD")
+    // await userCRUD(userDatabase, myUser, newUser)
 
-    let skierDatabase = new SkierDatabase(authentication.current.app)
+    // let skierDatabase = new SkierDatabase(authentication.current.app)
 
-    let skier = new Skier(
-      myUser, 
-      new WaterSkiingEquipment(
-        new Fin("brand", "style", new Measurement(1, UnitLength.feet), "bindingType"),
-        new Ski("brand", "style", new Measurement(2, UnitLength.feet))
-      ),
-      WaterSkiingAgeGroup.JR_MEN
-    )
+    // console.log("Skier CRUD")
+    // await skierCRUD(skierDatabase, skier, newSkier)
 
-    await skierDatabase.create(skier)
-      .then((response) => logger.current.log("CREATE: " + JSON.stringify(response)))
-      .catch((response) => logger.current.log("CREATE: " + JSON.stringify(response)))
+    // let waterSkiingSessionDatabase = new WaterSkiingSessionDatabase(authentication.app)
 
-    // await skierDatabase.read(skier.username)
-    //   .then((response) => logger.current.log("READ: " + JSON.stringify(response)))
-    //   .catch((response) => logger.current.log("READ: " + JSON.stringify(response)))
+    // console.log("WaterSkiingSession CRUD")
+    // await waterSkiingSessionCRUD(waterSkiingSessionDatabase, myUser, session)
 
-    // await skierDatabase.update(skier.username, skier)
-    //   .then((response) => logger.current.log("UPDATE: " + JSON.stringify(response)))
-    //   .catch((response) => logger.current.log("UPDATE: " + JSON.stringify(response)))
+    // let waterSkiingPassDatabase = new WaterSkiingPassDatabase(authentication.app)
 
-    // await skierDatabase.delete(skier.username)
-    //   .then((response) => logger.current.log("DELETE: " + JSON.stringify(response)))
-    //   .catch((response) => logger.current.log("DELETE: " + JSON.stringify(response)))
+    // console.log("WaterSkiingPass CRUD")
+    // await waterSkiingPassCRUD(waterSkiingPassDatabase, passes, session)
 
+    // let waterSkiingCourseDatabase = new WaterSkiingCourseDatabase(authentication.app)
 
-    // await waterSkiingSessionDatabase.create(session)
-    //   .then((response) => logger.current.log("CREATE: " + JSON.stringify(response)))
-    //   .catch((response) => logger.current.log("CREATE: " + JSON.stringify(response)))
+    // console.log("WaterSkiingCourse CRUD")
+    // await waterSkiingCourseCRUD(waterSkiingCourseDatabase, courses)
+    
+    // let cloudStorage = new CloudStorage()
+    // let id = new ObjectId().toString()
+    // let location = "/Users/mplekunov/backend-test/COP4939-ReactNative-Backend/ReactComponents/Linear Theory - Reduction of order.mp4"
 
-    // await waterSkiingSessionDatabase.read(session.id)
-    //   .then((response) => logger.current.log("READ SPECIFIC: " + JSON.stringify(response)))
-    //   .catch((response) => logger.current.log("READ SPECIFIC: " + JSON.stringify(response)))
+    // let file = {
+    //   name: id, 
+    //   location: location, 
+    //   type: ContentType.VIDEO, 
+    //   extension: Extension.MP4
+    // }
 
-    // await waterSkiingSessionDatabase.readAll(0, 100)
-    //   .then((response) => logger.current.log("READ ALL: " + JSON.stringify(response.data?.length)))
-    //   .catch((response) => logger.current.log("READ ALL: " + JSON.stringify(response)))
-
-    // await waterSkiingSessionDatabase.readAll(0, 100, myUser.username)
-    //   .then((response) => logger.current.log("READ ALL FOR USER: " + JSON.stringify(response.data?.length)))
-    //   .catch((response) => logger.current.log("READ ALL FOR USER: " + JSON.stringify(response)))
-
-    // await waterSkiingSessionDatabase.update(session.id, session)
-    //   .then((response) => logger.current.log("UPDATE: " + JSON.stringify(response)))
-    //   .catch((response) => logger.current.log("UPDATE: " + JSON.stringify(response)))
-
-    // await waterSkiingSessionDatabase.delete(session.id)
-    //   .then((response) => logger.current.log("DELETE: " + JSON.stringify(response)))
-    //   .catch((response) => logger.current.log("DELETE: " + JSON.stringify(response)))
-
-
-    // await myDatabase.create(newUser)
-    //   .then((response) => logger.current.log("CREATE: " + JSON.stringify(response)))
-    //   .catch((response) => logger.current.log("CREATE: " + JSON.stringify(response)))
-
-    // await myDatabase.read(newUser.username)
-    //   .then((response) => logger.current.log("READ: " + JSON.stringify(response)))
-    //   .catch((response) => logger.current.log("READ: " +JSON.stringify(response)))
-
-    // await myDatabase.read(myUser.username)
-    //   .then((response) => logger.current.log("READ: " + JSON.stringify(response)))
-    //   .catch((response) => logger.current.log("READ: " +JSON.stringify(response)))
-
-
-    // newUser.username = "yeah"
-
-    // await myDatabase.update(myUser.username, newUser)
-    //   .then((response) => logger.current.log("UPDATE: " + JSON.stringify(response)))
-    //   .catch((response) => logger.current.log("UPDATE: " + JSON.stringify(response)))
-
-    // await myDatabase.delete(newUser.username)
-    //   .then((response) => logger.current.log("DELETE: " + JSON.stringify(response)))
-    //   .catch((response) => logger.current.log("DELETE: " + JSON.stringify(response)))
+    // let result = await cloudStorage.uploadObject(
+    //   file,
+    //   (progress: number) => {
+    //     console.log(progress)
+    //   }
+    // )
+  
+    // console.log("Cloud Storage")
+    // console.log(JSON.stringify(result))
   }
 
   return (
     <View style={styles.container}> 
-    <TouchableOpacity onPress={register} style={styles.recordButton}>
+    <TouchableOpacity onPress={example} style={styles.recordButton}>
     </TouchableOpacity>
   </View>
   )
