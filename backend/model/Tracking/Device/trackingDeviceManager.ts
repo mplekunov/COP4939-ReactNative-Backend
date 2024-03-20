@@ -4,7 +4,7 @@ import { ContentType, Extension, File } from "../../File/file";
 
 export class TrackingDeviceManager {
     private readonly logger = new LoggerService("TrackingDeviceManager")
-    private static ubxDemoFileName = "COM6___38400_240105_173038_pond.ubx";
+    private static ubxDemoFileName = "rawData.ubx";
 
     public async start(): Promise<void> {
         this.logger.log("Session has been started.")
@@ -16,10 +16,11 @@ export class TrackingDeviceManager {
         this.logger.log("Session has been stopped.")
         // Send command to the device to stop recording
 
+        console.log()
         return new Promise((resolve, _) => {
             return resolve({
                 name: TrackingDeviceManager.ubxDemoFileName,
-                location: `${FileSystem.getMainBundleDir()}/${TrackingDeviceManager.ubxDemoFileName}`,
+                url: FileSystem.getMainBundleDir() + TrackingDeviceManager.ubxDemoFileName,
                 type: ContentType.OTHER,
                 extension: Extension.OTHER
             })

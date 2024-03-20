@@ -2,7 +2,7 @@ import AWS from 'aws-sdk'
 import { ServerCode, ServerResponse } from '../Network/server'
 import { FileSystem } from '../../FileSystem/fileSystem'
 import { Buffer } from "buffer"
-import { File } from '../File/file'
+import { ContentType, Extension, File } from '../File/file'
 
 export class CloudStorage {    
     private static CONFIG = { 
@@ -19,12 +19,49 @@ export class CloudStorage {
         })
     }
 
+    public async downloadObject(objectKey: string): Promise<ServerResponse<File, string>> {
+        return new Promise(async (resolve, reject) => {
+            let s3 = new AWS.S3()
+
+            let request = {
+                Bucket: CloudStorage.CONFIG.bucket_name,
+                Key: objectKey,
+            }
+
+            try {
+                let download = s3.getObject(request)
+                let response = await download.promise()
+
+                let url = `${FileSystem.getDocumentDir()}/${request.Key}}`
+
+                await FileSystem.write(`${FileSystem.getDocumentDir()}/${request.Key}}`, response.Body?.toString()!)
+
+                let extension = objectKey.split(".")[1].toLocaleLowerCase()
+                let contentType = response.ContentType?.split("/")[0].toLocaleLowerCase()
+                return resolve({
+                    status: ServerCode.OK,
+                    data: {
+                        name: objectKey,
+                        extension: extension !== undefined ? extension as Extension : Extension.OTHER,
+                        type: contentType !== undefined ? contentType as ContentType : ContentType.OTHER,
+                        url: url
+                    }
+                })
+            } catch(error: any) {
+                return resolve({
+                    status: ServerCode.BadRequest,
+                    error: error
+                })
+            }
+        })
+    }
+
     public async uploadObject(object: File, progressCallback: (progress: number) => void): Promise<ServerResponse<File, string>> {
         return new Promise(async (resolve, _) => {
             let s3 = new AWS.S3()
 
             try {
-                let file = await FileSystem.read(object.location, 'base64')
+                let file = await FileSystem.read(object.url, 'base64')
 
                 let upload = s3.upload({
                     Bucket: CloudStorage.CONFIG.bucket_name,
@@ -41,7 +78,7 @@ export class CloudStorage {
 
                 let response = await upload.promise()
 
-                object.location = `${CloudStorage.BASE_CDN_URL}/${response.Key}`
+                object.url = `${CloudStorage.BASE_CDN_URL}/${response.Key}`
 
                 return resolve({
                     status: ServerCode.OK,

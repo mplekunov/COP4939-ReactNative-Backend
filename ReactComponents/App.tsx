@@ -35,6 +35,10 @@ import { WaterSkiingPassDatabase } from '../Backend/Model/Database/waterSkiingPa
 import { ProcessableWaterSkiingCourse, ProcessingStatus } from '../Backend/Model/WaterSkiing/Course/waterSkiingCourse';
 import { WaterSkiingCourseDatabase } from '../Backend/Model/Database/waterSkiingCourseDatabase';
 import { TrackingDeviceManager } from '../Backend/Model/Tracking/Device/trackingDeviceManager';
+import { TrackingProcessor } from '../Backend/Model/Tracking/Processing/trackingProcessor';
+import { TrackingRecord } from '../Backend/Model/Tracking/trackingRecord';
+import { FileSystem } from '../Backend/FileSystem/fileSystem';
+import RNFS from 'react-native-fs'
 
 /**
  * To Record Session:
@@ -420,10 +424,14 @@ function App(): React.JSX.Element {
 
     let trackingDeviceManager = new TrackingDeviceManager()
     await trackingDeviceManager.start()
-    await trackingDeviceManager.stop()
-      .then((file: File) => {
-        logger.current.log(JSON.stringify(file))
-      })
+    let file = await trackingDeviceManager.stop()
+    
+    let trackingProcessor = new TrackingProcessor()
+    let id = await trackingProcessor.createProcessingJob(file)
+
+    await trackingProcessor.getProcessedRecords(id, (records: TrackingRecord[])=> {
+      console.log(records.length)
+    })
 
     // let userDatabase = new UserDatabase(authentication.current.app)
 
@@ -452,7 +460,8 @@ function App(): React.JSX.Element {
     
     // let cloudStorage = new CloudStorage()
     // let id = new ObjectId().toString()
-    // let location = "ReactComponents/Linear Theory - Reduction of order.mp4"
+    // let demoVideoFileName = "demoVideo.mp4"
+    // let location = `${FileSystem.getMainBundleDir()}/${demoVideoFileName}`
 
     // let file = {
     //   name: id, 

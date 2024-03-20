@@ -45,7 +45,6 @@ export class WaterSkiingPassProcessor {
             let maxGForce = new Measurement<UnitAcceleration>(0.0, records[0].motion.gForce.unit)
             let maxAcceleration = new Measurement<UnitAcceleration>(0.0, records[0].motion.acceleration.unit)
             let maxCourse = new Measurement<UnitAngle>(0.0, records[0].motion.course.unit)
-            let maxHeading = new Measurement<UnitAngle>(0.0, records[0].motion.heading.unit)
     
             let wakeCrossIndex = 0
             let buoyIndex = 0
@@ -67,7 +66,6 @@ export class WaterSkiingPassProcessor {
                     maxSpeed = max(record.motion.speed, maxSpeed)
                     maxPitch = max(record.motion.pitch, maxPitch)
                     maxRoll = max(record.motion.roll, maxRoll)
-                    maxHeading = max(record.motion.heading, maxHeading)
                     maxCourse = max(record.motion.course, maxCourse)
                     maxGForce = max(record.motion.gForce, maxGForce)
                     maxAcceleration = max(record.motion.acceleration, maxAcceleration)

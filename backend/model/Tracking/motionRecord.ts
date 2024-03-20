@@ -9,7 +9,6 @@ export class MotionRecord {
     altitude: Measurement<UnitLength>
     pitch: Measurement<UnitAngle>
     roll: Measurement<UnitAngle>
-    heading: Measurement<UnitAngle>
     course: Measurement<UnitAngle>
     acceleration: Measurement<UnitAcceleration>
     gForce: Measurement<UnitAcceleration>
@@ -19,7 +18,6 @@ export class MotionRecord {
         altitude: Measurement<UnitLength>,
         pitch: Measurement<UnitAngle>,
         roll: Measurement<UnitAngle>,
-        heading: Measurement<UnitAngle>,
         course: Measurement<UnitAngle>,
         acceleration: Measurement<UnitAcceleration>,
         gForce: Measurement<UnitAcceleration>
@@ -30,7 +28,6 @@ export class MotionRecord {
         this.gForce = gForce
         this.pitch = pitch
         this.roll = roll
-        this.heading = heading
         this.course = course
     }
 }

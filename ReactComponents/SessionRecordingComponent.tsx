@@ -124,14 +124,14 @@ export const SessionRecording: React.FC = () => {
 
         cloud.uploadObject({
             name: pass.video.id,
-            location: pass.video.url,
+            url: pass.video.url,
             type: ContentType.VIDEO,
             extension: pass.video.extension
         }, (progress: number) => {
             // Progress of upload in percentage
         })
         .then((response) => {
-            pass.video.url = response.data!.location
+            pass.video.url = response.data!.url
         })
         .catch((error) => logger.current.error(`${error}`))
 
