@@ -30,13 +30,13 @@ export function startVideoRecording(camera: Camera, sessionID: string, onRecordF
 
         camera.startRecording({
             onRecordingFinished: (video) => onRecordFinish(
-                new Video(
-                    sessionID, 
-                    creationDate, 
-                    video.path, 
-                    video.duration * 1000,
-                    Extension.MP4
-                )
+                {
+                    id: sessionID, 
+                    creationDate: creationDate, 
+                    url: video.path, 
+                    durationInMilliseconds: video.duration * 1000,
+                    extension: Extension.MP4
+                }
             ),
             onRecordingError: (error) => onError(error),
             videoBitRate: 'high',
