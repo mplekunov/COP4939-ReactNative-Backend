@@ -57,6 +57,14 @@ export class WaterSkiingDataProcessor {
                 course.exitGatePosition = coordinateMap.get(this.getTimeInSeconds(dateCourse.exitGatePosition))
             }
 
+            if (course.wakeCrossPositions?.length !== this.NUM_OF_WAKE_CROSSES || 
+                course.buoyPositions?.length !== this.NUM_OF_BUOYS ||
+                course.entryGatePosition === undefined ||
+                course.exitGatePosition === undefined
+            ) {
+                throw new Error("Couldn't find correct coordinate for all dates in course")
+            }
+
             return {
                 buoyPositions: course.buoyPositions!,
                 wakeCrossPositions: course.wakeCrossPositions!,
