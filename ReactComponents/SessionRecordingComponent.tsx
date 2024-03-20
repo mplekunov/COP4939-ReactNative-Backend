@@ -8,11 +8,11 @@ import { TrackingRecord } from "../Backend/Model/Tracking/trackingRecord";
 import { TrackingSession } from "../Backend/Model/Tracking/trackingSession";
 import { Pass } from "../Backend/Model/WaterSkiing/Processing/pass";
 import { getPermissions, startVideoRecording, stopVideoRecording } from "./CameraComponents";
-import { WaterSkiingPassProcessor } from "../Backend/Model/WaterSkiing/Processing/waterSkiingPassProcessor";
+import { WaterSkiingDataProcessor } from "../Backend/Model/WaterSkiing/Processing/waterSkiingPassProcessor";
 import { TrackingDeviceManager } from "../Backend/Model/Tracking/Device/trackingDeviceManager";
 import { ObjectId } from 'bson';
 import { ContentType, File } from "../Backend/Model/File/file";
-import { TrackingProcessor } from "../Backend/Model/Tracking/Processing/trackingProcessor";
+import { TrackingDataProcessor } from "../Backend/Model/Tracking/Processing/trackingProcessor";
 import { WaterSkiingSessionDatabase } from "../Backend/Model/Database/waterSkiingSessionDatabase";
 import { CloudStorage } from "../Backend/Model/Cloud/cloudStorage";
 import { WaterSkiingPassDatabase } from "../Backend/Model/Database/waterSkiingPassDatabase";
@@ -29,7 +29,7 @@ export const SessionRecording: React.FC = () => {
     
     const trackingDeviceManager = useRef(new TrackingDeviceManager())
     
-    const trackingProcessor = useRef(new TrackingProcessor())
+    const trackingProcessor = useRef(new TrackingDataProcessor())
 
     const logger = useRef(new LoggerService("SessionRecordingComponent"))
 
@@ -107,7 +107,7 @@ export const SessionRecording: React.FC = () => {
             return
         }
 
-        let processor = new WaterSkiingPassProcessor()
+        let processor = new WaterSkiingDataProcessor()
 
         // processor.process(), session)
         //     .then((pass) => setPass(pass))

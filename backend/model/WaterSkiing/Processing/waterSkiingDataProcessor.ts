@@ -10,10 +10,10 @@ import { UnitAcceleration } from "../../Units/unitAcceleration";
 import { UnitAngle } from "../../Units/unitAngle";
 import { UnitLength } from "../../Units/unitLength";
 import { UnitSpeed } from "../../Units/unitSpeed";
-import { WaterSkiingCourse } from "../Course/waterSkiingCourse";
-import { Pass } from "./pass";
+import { ProcessableWaterSkiingCourse, WaterSkiingCourse } from "../Course/waterSkiingCourse";
+import { Pass, ProcessablePass } from "./pass";
 
-export class WaterSkiingPassProcessor {
+export class WaterSkiingDataProcessor {
     private readonly logger = new LoggerService("WaterSkiingPassProcessor")
     private readonly videoManager = new VideoManager()
 
@@ -22,7 +22,50 @@ export class WaterSkiingPassProcessor {
 
     private readonly RANGE = new Measurement<UnitLength>(1.0, UnitLength.meters)
     
-    public async process(course: WaterSkiingCourse<Coordinate>, session: TrackingSession) : Promise<Pass> {
+    public processCourse(dateCourse: WaterSkiingCourse<Date>, trackingRecords: TrackingRecord[]): WaterSkiingCourse<Coordinate> {
+        let course: Partial<WaterSkiingCourse<Coordinate>> = {
+            buoyPositions: [],
+            wakeCrossPositions: []
+        }
+
+        let coordinateMap =  new Map<Date, Coordinate>()
+
+        trackingRecords.forEach(record => coordinateMap.set(record.date, record.location.coordinate))
+
+        try {
+            dateCourse.buoyPositions.forEach(date => {
+                if (coordinateMap.has(date)) {
+                    course.buoyPositions?.push(coordinateMap.get(date)!)
+                }
+            })
+
+            dateCourse.wakeCrossPositions.forEach(date => {
+                if (coordinateMap.has(date)) {
+                    course.wakeCrossPositions?.push(coordinateMap.get(date)!)
+                }
+            })
+
+            if (coordinateMap.has(dateCourse.entryGatePosition)) {
+                course.entryGatePosition = coordinateMap.get(dateCourse.entryGatePosition)
+            }
+
+            if (coordinateMap.has(dateCourse.exitGatePosition)) {
+                course.exitGatePosition = coordinateMap.get(dateCourse.exitGatePosition)
+            }
+
+            return {
+                buoyPositions: course.buoyPositions!,
+                wakeCrossPositions: course.wakeCrossPositions!,
+                entryGatePosition: course.entryGatePosition!,
+                exitGatePosition: course.exitGatePosition!
+            }
+        } catch(error: any) {
+            this.logger.error(error)
+            throw error
+        }
+    }    
+    
+    public async processPass(course: WaterSkiingCourse<Coordinate>, session: TrackingSession) : Promise<Pass> {
         return new Promise(async (resolve, reject) => {
             let records = session.trackingRecords
             let video = session.video

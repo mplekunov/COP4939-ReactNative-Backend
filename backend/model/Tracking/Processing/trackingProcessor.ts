@@ -12,7 +12,7 @@ import { UnitAngle } from "../../Units/unitAngle";
 import { UnitAcceleration } from "../../Units/unitAcceleration";
 import { CloudStorage } from "../../Cloud/cloudStorage";
 
-export class TrackingProcessor {
+export class TrackingDataProcessor {
     private readonly logger = new LoggerService("TrackingProcessor")
     private static readonly processedStatsFileName = "processedData.CSV"
 
@@ -62,7 +62,7 @@ export class TrackingProcessor {
     private async fetchProcessedRecords(jobId: string): Promise<Array<TrackingRecord>> {
         let cloudStorage = new CloudStorage()
 
-        let response = await cloudStorage.downloadObject(TrackingProcessor.processedStatsFileName)
+        let response = await cloudStorage.downloadObject(TrackingDataProcessor.processedStatsFileName)
         
         console.log(response.data)
         let fileContent = await FileSystem.read(response.data?.url!, 'utf8')
@@ -86,19 +86,19 @@ export class TrackingProcessor {
         return rows.map(row => {            
             let values = row.split(',')
 
-            let dateString = values[headerToIndexMap.get(TrackingProcessor.DATE)!]
-            let timeString = values[headerToIndexMap.get(TrackingProcessor.TIME)!]
+            let dateString = values[headerToIndexMap.get(TrackingDataProcessor.DATE)!]
+            let timeString = values[headerToIndexMap.get(TrackingDataProcessor.TIME)!]
 
             let time = this.parseCustomDateTime(dateString, timeString)
 
-            let speed = parseFloat(values[headerToIndexMap.get(TrackingProcessor.SPEED)!])
-            let altitude = parseFloat(values[headerToIndexMap.get(TrackingProcessor.ALTITUDE)!])
-            let pitch = parseFloat(values[headerToIndexMap.get(TrackingProcessor.PITCH)!])
-            let roll = parseFloat(values[headerToIndexMap.get(TrackingProcessor.ROLL)!])
-            let course = parseFloat(values[headerToIndexMap.get(TrackingProcessor.COURSE)!])
+            let speed = parseFloat(values[headerToIndexMap.get(TrackingDataProcessor.SPEED)!])
+            let altitude = parseFloat(values[headerToIndexMap.get(TrackingDataProcessor.ALTITUDE)!])
+            let pitch = parseFloat(values[headerToIndexMap.get(TrackingDataProcessor.PITCH)!])
+            let roll = parseFloat(values[headerToIndexMap.get(TrackingDataProcessor.ROLL)!])
+            let course = parseFloat(values[headerToIndexMap.get(TrackingDataProcessor.COURSE)!])
 
-            let longitude = parseInt(values[headerToIndexMap.get(TrackingProcessor.LONGITUDE)!])
-            let latitude = parseInt(values[headerToIndexMap.get(TrackingProcessor.LATITUDE)!])
+            let longitude = parseInt(values[headerToIndexMap.get(TrackingDataProcessor.LONGITUDE)!])
+            let latitude = parseInt(values[headerToIndexMap.get(TrackingDataProcessor.LATITUDE)!])
 
             let deltaSpeed = 1
             let deltaTime = 1

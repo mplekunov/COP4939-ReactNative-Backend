@@ -35,7 +35,7 @@ import { WaterSkiingPassDatabase } from '../Backend/Model/Database/waterSkiingPa
 import { ProcessableWaterSkiingCourse, ProcessingStatus } from '../Backend/Model/WaterSkiing/Course/waterSkiingCourse';
 import { WaterSkiingCourseDatabase } from '../Backend/Model/Database/waterSkiingCourseDatabase';
 import { TrackingDeviceManager } from '../Backend/Model/Tracking/Device/trackingDeviceManager';
-import { TrackingProcessor } from '../Backend/Model/Tracking/Processing/trackingProcessor';
+import { TrackingDataProcessor } from '../Backend/Model/Tracking/Processing/trackingProcessor';
 import { TrackingRecord } from '../Backend/Model/Tracking/trackingRecord';
 import { FileSystem } from '../Backend/FileSystem/fileSystem';
 import RNFS from 'react-native-fs'
@@ -426,7 +426,7 @@ function App(): React.JSX.Element {
     await trackingDeviceManager.start()
     let file = await trackingDeviceManager.stop()
     
-    let trackingProcessor = new TrackingProcessor()
+    let trackingProcessor = new TrackingDataProcessor()
     let id = await trackingProcessor.createProcessingJob(file)
 
     await trackingProcessor.getProcessedRecords(id, (records: TrackingRecord[])=> {
