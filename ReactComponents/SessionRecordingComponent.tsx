@@ -8,7 +8,7 @@ import { TrackingRecord } from "../Backend/Model/Tracking/trackingRecord";
 import { TrackingSession } from "../Backend/Model/Tracking/trackingSession";
 import { Pass } from "../Backend/Model/WaterSkiing/Processing/pass";
 import { getPermissions, startVideoRecording, stopVideoRecording } from "./CameraComponents";
-import { WaterSkiingDataProcessor } from "../Backend/Model/WaterSkiing/Processing/waterSkiingPassProcessor";
+import { WaterSkiingDataProcessor } from "../Backend/Model/WaterSkiing/Processing/waterSkiingDataProcessor";
 import { TrackingDeviceManager } from "../Backend/Model/Tracking/Device/trackingDeviceManager";
 import { ObjectId } from 'bson';
 import { ContentType, File } from "../Backend/Model/File/file";

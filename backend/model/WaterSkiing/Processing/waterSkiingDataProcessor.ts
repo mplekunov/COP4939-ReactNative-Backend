@@ -10,8 +10,8 @@ import { UnitAcceleration } from "../../Units/unitAcceleration";
 import { UnitAngle } from "../../Units/unitAngle";
 import { UnitLength } from "../../Units/unitLength";
 import { UnitSpeed } from "../../Units/unitSpeed";
-import { ProcessableWaterSkiingCourse, WaterSkiingCourse } from "../Course/waterSkiingCourse";
-import { Pass, ProcessablePass } from "./pass";
+import { WaterSkiingCourse } from "../Course/waterSkiingCourse";
+import { Pass } from "./pass";
 
 export class WaterSkiingDataProcessor {
     private readonly logger = new LoggerService("WaterSkiingPassProcessor")
