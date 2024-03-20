@@ -22,35 +22,39 @@ export class WaterSkiingDataProcessor {
 
     private readonly RANGE = new Measurement<UnitLength>(1.0, UnitLength.meters)
     
+    private getTimeInSeconds(date: Date): number {
+        return Math.round(date.getTime() / 1000)
+    }
+    
     public processCourse(dateCourse: WaterSkiingCourse<Date>, trackingRecords: TrackingRecord[]): WaterSkiingCourse<Coordinate> {
         let course: Partial<WaterSkiingCourse<Coordinate>> = {
             buoyPositions: [],
-            wakeCrossPositions: []
+            wakeCrossPositions: [],
         }
 
-        let coordinateMap =  new Map<Date, Coordinate>()
+        let coordinateMap =  new Map<number, Coordinate>()
 
-        trackingRecords.forEach(record => coordinateMap.set(record.date, record.location.coordinate))
+        trackingRecords.forEach(record => coordinateMap.set(this.getTimeInSeconds(record.date), record.location.coordinate))
 
         try {
             dateCourse.buoyPositions.forEach(date => {
-                if (coordinateMap.has(date)) {
-                    course.buoyPositions?.push(coordinateMap.get(date)!)
+                if (coordinateMap.has(this.getTimeInSeconds(date))) {
+                    course.buoyPositions?.push(coordinateMap.get(this.getTimeInSeconds(date))!)
                 }
             })
 
             dateCourse.wakeCrossPositions.forEach(date => {
-                if (coordinateMap.has(date)) {
-                    course.wakeCrossPositions?.push(coordinateMap.get(date)!)
+                if (coordinateMap.has(this.getTimeInSeconds(date))) {
+                    course.wakeCrossPositions?.push(coordinateMap.get(this.getTimeInSeconds(date))!)
                 }
             })
 
-            if (coordinateMap.has(dateCourse.entryGatePosition)) {
-                course.entryGatePosition = coordinateMap.get(dateCourse.entryGatePosition)
+            if (coordinateMap.has(this.getTimeInSeconds(dateCourse.entryGatePosition))) {
+                course.entryGatePosition = coordinateMap.get(this.getTimeInSeconds(dateCourse.entryGatePosition))
             }
 
-            if (coordinateMap.has(dateCourse.exitGatePosition)) {
-                course.exitGatePosition = coordinateMap.get(dateCourse.exitGatePosition)
+            if (coordinateMap.has(this.getTimeInSeconds(dateCourse.exitGatePosition))) {
+                course.exitGatePosition = coordinateMap.get(this.getTimeInSeconds(dateCourse.exitGatePosition))
             }
 
             return {
