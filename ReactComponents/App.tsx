@@ -11,45 +11,30 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { SessionRecording } from './SessionRecordingComponent';
 import { Sex, User } from '../Backend/Model/User/user';
-import { Person } from '../Backend/Model/Person/person';
 import { Authentication } from '../Backend/Model/Server/authentication';
 import { LoggerService } from '../Backend/Logger/loggerService';
 import { UserDatabase } from '../Backend/Model/Database/userDatabase';
 import { WaterSkiingSessionDatabase } from '../Backend/Model/Database/waterSkiingSessionDatabase';
-import { TrackingSession } from '../Backend/Model/Tracking/trackingSession';
 import { BSON, ObjectId } from 'bson';
-import { TrackingRecord } from '../Backend/Model/Tracking/trackingRecord';
-import { MotionRecord } from '../Backend/Model/Tracking/motionRecord';
 import { Measurement } from '../Backend/Model/Units/unit';
 import { UnitSpeed } from '../Backend/Model/Units/unitSpeed';
 import { UnitLength } from '../Backend/Model/Units/unitLength';
 import { UnitAcceleration } from '../Backend/Model/Units/unitAcceleration';
-import { LocationRecord } from '../Backend/Model/Tracking/locationRecord';
-import { Coordinate } from '../Backend/Model/Units/coordinate';
 import { UnitAngle } from '../Backend/Model/Units/unitAngle';
-import { Video } from '../Backend/Model/Camera/video';
 import { WaterSkiingSession } from '../Backend/Model/WaterSkiing/waterSkiingSession';
-import { ActivitySession } from '../Backend/Model/Session/activitySession';
-import { Location } from '../Backend/Model/Location/location';
-import { Pass, ProcessablePass } from '../Backend/Model/WaterSkiing/Processing/pass';
-import { Gate } from '../Backend/Model/WaterSkiing/Course/gate';
+import { ProcessablePass } from '../Backend/Model/WaterSkiing/Processing/pass';
 import { Boat } from '../Backend/Model/WaterSkiing/Boat/boat';
 import { Driver } from '../Backend/Model/WaterSkiing/Boat/driver';
-import { WakeCross } from '../Backend/Model/WaterSkiing/Course/wakeCross';
-import { Buoy } from '../Backend/Model/WaterSkiing/Course/buoy';
 import { SkierDatabase } from '../Backend/Model/Database/skierDatabase';
 import { Skier } from '../Backend/Model/WaterSkiing/Skier/skier';
-import { WaterSkiingEquipment } from '../Backend/Model/WaterSkiing/Equipment/waterSkiingEquipment';
-import { Fin } from '../Backend/Model/WaterSkiing/Equipment/fin';
-import { Ski } from '../Backend/Model/WaterSkiing/Equipment/ski';
 import { WaterSkiingAgeGroup } from '../Backend/Model/WaterSkiing/Skier/waterSkiingAgeGroup';
 import { CloudStorage } from '../Backend/Model/Cloud/cloudStorage';
 import { ContentType, Extension, File } from '../Backend/Model/File/file';
 import { WaterSkiingPassDatabase } from '../Backend/Model/Database/waterSkiingPassDatabase';
 import { ProcessableWaterSkiingCourse, ProcessingStatus } from '../Backend/Model/WaterSkiing/Course/waterSkiingCourse';
 import { WaterSkiingCourseDatabase } from '../Backend/Model/Database/waterSkiingCourseDatabase';
+import { TrackingDeviceManager } from '../Backend/Model/Tracking/Device/trackingDeviceManager';
 
 /**
  * To Record Session:
@@ -433,6 +418,13 @@ function App(): React.JSX.Element {
       .then((response) => logger.current.log("LOGIN: " + JSON.stringify(response)))
       .catch((error) => logger.current.error("LOGIN: " + JSON.stringify(error)))
 
+    let trackingDeviceManager = new TrackingDeviceManager()
+    await trackingDeviceManager.start()
+    await trackingDeviceManager.stop()
+      .then((file: File) => {
+        logger.current.log(JSON.stringify(file))
+      })
+
     // let userDatabase = new UserDatabase(authentication.current.app)
 
     // console.log("User CRUD")
@@ -460,7 +452,7 @@ function App(): React.JSX.Element {
     
     // let cloudStorage = new CloudStorage()
     // let id = new ObjectId().toString()
-    // let location = "/Users/mplekunov/backend-test/COP4939-ReactNative-Backend/ReactComponents/Linear Theory - Reduction of order.mp4"
+    // let location = "ReactComponents/Linear Theory - Reduction of order.mp4"
 
     // let file = {
     //   name: id, 
